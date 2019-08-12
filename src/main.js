@@ -27,11 +27,14 @@ const filmsListContainerElement = document.querySelector(`.films-list__container
 for (let i = 0; i < 5; i++) {
   renderComponent(filmsListContainerElement, getFilmCardTemplate(), `beforeend`);
 }
+
 // дополнительно карточка отрисовывается дважды в блоках топ рейтед и мост комментед
-const filmsExtraElementTopRated = document.querySelector(`.films-list--extra:nth-child(1)`);
-const filmsExtraElementMostCommented = document.querySelector(`.films-list--extra:nth-child(2)`);
+const filmsExtraElementTopRated = document.querySelector(`body > main > section > section:nth-child(2) > .films-list__container`);
+const filmsExtraElementMostCommented = document.querySelector(`body > main > section > section:nth-child(3) > .films-list__container`);
 
 renderComponent(filmsExtraElementTopRated, getFilmCardTemplate(), `beforeend`);
+renderComponent(filmsExtraElementTopRated, getFilmCardTemplate(), `beforeend`);
+renderComponent(filmsExtraElementMostCommented, getFilmCardTemplate(), `beforeend`);
 renderComponent(filmsExtraElementMostCommented, getFilmCardTemplate(), `beforeend`);
 
 renderComponent(filmsListElement, getShowMoreButtonTemplate(), `beforeend`);

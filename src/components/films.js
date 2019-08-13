@@ -1,4 +1,4 @@
-export const getFilmsTemplate = ()=> (`
+export const getFilmsTemplate = () => (`
   <section class="films">
     <section class="films-list">
       <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
@@ -15,4 +15,5 @@ export const getFilmsTemplate = ()=> (`
       <div class="films-list__container">
       </div>
     </section>
+  </section>
   `);

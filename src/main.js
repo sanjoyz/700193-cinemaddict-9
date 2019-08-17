@@ -8,6 +8,8 @@ import {getShowMoreButtonTemplate} from './components/show-more-button.js';
 import {getFilmDetailsTemplate} from './components/film-details.js';
 import {getFilmsArray} from './data.js';
 import {filters} from './data.js';
+import {filmDetails} from './data.js';
+import {comments} from './data.js';
 
 const FILMS_TO_SHOW = 5;
 const FILMS_WE_HAVE = 15;
@@ -60,4 +62,4 @@ renderComponent(filmsExtraElementMostCommented, getFilmCardTemplate(getFilmsArra
 
 
 const footerElement = document.querySelector(`.footer`);
-// renderComponent(footerElement, getFilmDetailsTemplate(), `afterend`);
+renderComponent(footerElement, getFilmDetailsTemplate(filmDetails, comments), `afterend`);

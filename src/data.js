@@ -84,3 +84,62 @@ export const filters = [
     isChecked: false,
   }
 ];
+
+export const filmDetails = {
+  name: `The Great Flamarion`,
+  nameOriginal: `The Great Flamarion`,
+  director: `Anthony Mann`,
+  poster: `./images/posters/the-great-flamarion.jpg`,
+  writers: [
+    `Anne Wigton`,
+    `Heinz Herald`,
+    `Richard Weil`,
+  ],
+  actors: [
+    `Erich von Stoheim`,
+    `Mary Beth Hughes`,
+    `Dan Duryea`
+  ],
+  releaseDate: `30 March 1945`,
+  duration: `1h 18m`,
+  country: `USA`,
+  genres: [
+    `Drama`,
+    `Film-Noir`,
+    `Mystery`,
+  ],
+  description: `The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events
+  leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous
+  marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie
+  (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with
+  Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.`,
+  age: `18+`,
+  rating: `8.9`,
+};
+
+export const comments = [
+  {
+    emoji: `./images/emoji/smile.png`,
+    text: `Interesting setting and a good cast`,
+    author: `Tim Macoveev`,
+    commentDay: `3 days ago`,
+  },
+  {
+    emoji: `./images/emoji/sleeping.png`,
+    text: `Booooooooooring`,
+    author: `John Doe`,
+    commentDay: `3 days ago`,
+  },
+  {
+    emoji: `./images/emoji/puke.png`,
+    text: `Very very old. Meh`,
+    author: `John Doe`,
+    commentDay: `2 days ago`,
+  },
+  {
+    emoji: `./images/emoji/angry.png`,
+    text: `Almost two hours? Seriously?`,
+    author: `John Doe`,
+    commentDay: `Today`,
+  },
+];

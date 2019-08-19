@@ -35,7 +35,8 @@ const filmsListContainerElement = document.querySelector(`.films-list__container
 
 const renderFilms = (films) => {
   films.forEach((film) => {
-    if (document.querySelectorAll(`section.films-list > div > article.film-card`).length === getFilmsArray(FILMS_WE_HAVE).length) {
+    const collectionOfRenderedFilmCards = document.querySelectorAll(`section.films-list > div > article.film-card`);
+    if (collectionOfRenderedFilmCards.length === FILMS_WE_HAVE) {
       filmsListElement.querySelector(`.films-list__show-more`).classList.add(`visually-hidden`);
       return;
     }

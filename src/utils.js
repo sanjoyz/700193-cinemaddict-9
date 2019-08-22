@@ -20,8 +20,8 @@ export const render = (container, element, position) => {
   }
 };
 
-export const unrender = (element) => {
+export const deleteElement = (element) => {
   if (element) {
-    element.remover();
+    element.remove();
   }
 };

@@ -2,65 +2,87 @@ import {getSearchTemplate} from './components/search.js';
 import {getProfileTemplate} from './components/profile.js';
 import {getNavigationTemplate} from './components/navigation.js';
 import {getSortingTemplate} from './components/sort.js';
-import {getFilmsTemplate} from './components/films.js';
-import {getFilmCardTemplate} from './components/film-card.js';
+import {getFilmListTemplate} from './components/film-list.js';
 import {getShowMoreButtonTemplate} from './components/show-more-button.js';
-import {getFilmDetailsTemplate} from './components/film-details.js';
-import {getFilmsArray} from './data.js';
 import {filters} from './data.js';
-import {filmDetails} from './data.js';
 import {comments} from './data.js';
-
+import Film from './components/film-card.js';
+import FilmDetails from './components/film-details.js';
+import {createElement} from './utils.js';
+import {render} from './utils.js';
+import {deleteElement} from './utils.js';
+import {Position} from './utils.js';
+import {getFilm} from './data.js';
 const FILMS_TO_SHOW = 5;
 const FILMS_WE_HAVE = 15;
-const renderComponent = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
+const TOP_RATED_FILMS = 2;
+const MOST_COMMENTED_FILMS = 2;
+
 
 const headerElement = document.querySelector(`.header`);
-
-renderComponent(headerElement, getSearchTemplate(), `beforeend`);
-renderComponent(headerElement, getProfileTemplate(), `beforeend`);
-
 const mainElement = document.querySelector(`.main`);
-
-renderComponent(mainElement, getNavigationTemplate(filters), `beforeend`);
-renderComponent(mainElement, getSortingTemplate(), `beforeend`);
-
-renderComponent(mainElement, getFilmsTemplate(), `beforeend`);
-
+const searchElement = createElement(getSearchTemplate());
+render(headerElement, searchElement, `beforeend`);
+const profileElement = createElement(getProfileTemplate());
+render(headerElement, profileElement, `beforeend`);
+const navigationElement = createElement(getNavigationTemplate(filters));
+render(mainElement, navigationElement, `beforeend`);
+const sortingElement = createElement(getSortingTemplate());
+render(mainElement, sortingElement, `beforeend`);
+const filmListElement = createElement(getFilmListTemplate());
+render(mainElement, filmListElement, `beforeend`);
 const filmsListElement = document.querySelector(`.films-list`);
-renderComponent(filmsListElement, getShowMoreButtonTemplate(), `beforeend`);
+const showMoreButtonElement = createElement(getShowMoreButtonTemplate());
+render(filmsListElement, showMoreButtonElement, `beforeend`);
+
 const filmsListContainerElement = document.querySelector(`.films-list__container`);
 
-const renderFilms = (films) => {
-  films.forEach((film) => {
-    const collectionOfRenderedFilmCards = document.querySelectorAll(`section.films-list > div > article.film-card`);
-    if (collectionOfRenderedFilmCards.length === FILMS_WE_HAVE) {
-      filmsListElement.querySelector(`.films-list__show-more`).classList.add(`visually-hidden`);
-      return;
+const renderFilm = (filmMock, renderContainer) => {
+  const film = new Film(filmMock);
+  const filmDetails = new FilmDetails(filmMock);
+  if (document.querySelectorAll(`.film-card`).length > FILMS_WE_HAVE) {
+    filmsListElement.querySelector(`.films-list__show-more`).classList.add(`visually-hidden`);
+    return;
+  }
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      deleteElement(document.querySelector(`.film-details`));
+      document.removeEventListener(`keydown`, onEscKeyDown);
     }
-    renderComponent(filmsListContainerElement, getFilmCardTemplate(film));
+  };
+  // Попап по клику: постер, название, комменты
+  film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
+    render(mainElement, filmDetails.getElement(), `beforeend`);
   });
+  film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
+    render(mainElement, filmDetails.getElement(), `beforeend`);
+  });
+  film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
+    render(mainElement, filmDetails.getElement(), `beforeend`);
+  });
+  // --
+  const onCloseButtonClick = () => {
+    deleteElement(document.querySelector(`.film-details`));
+  };
+  filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
+  filmDetails.getElement().addEventListener(`keydown`, onEscKeyDown);
+
+  render(renderContainer, film.getElement(), Position.BEFOREEND);
 };
 
-renderFilms(getFilmsArray(FILMS_TO_SHOW));
+const filmMocks = new Array(FILMS_TO_SHOW).fill(``).map(getFilm);
+filmMocks.forEach((filmMock) => renderFilm(filmMock, filmsListContainerElement));
 
 const onshowMoreButtonClick = () => {
-  renderFilms(getFilmsArray(FILMS_TO_SHOW));
+  filmMocks.forEach((filmMock) => renderFilm(filmMock, filmsListContainerElement));
 };
-const showMoreButtonElement = document.querySelector(`.films-list__show-more`);
-showMoreButtonElement.addEventListener(`click`, onshowMoreButtonClick);
 
-// дополнительно карточка отрисовывается дважды в блоках топ рейтед и мост комментед
+const showMoreButton = document.querySelector(`.films-list__show-more`);
+showMoreButton.addEventListener(`click`, onshowMoreButtonClick);
+
 const filmsExtraElementTopRated = document.querySelector(`body > main > section > section:nth-child(2) > .films-list__container`);
 const filmsExtraElementMostCommented = document.querySelector(`body > main > section > section:nth-child(3) > .films-list__container`);
-
-renderComponent(filmsExtraElementTopRated, getFilmCardTemplate(getFilmsArray(FILMS_TO_SHOW)), `beforeend`);
-renderComponent(filmsExtraElementTopRated, getFilmCardTemplate(getFilmsArray(FILMS_TO_SHOW)), `beforeend`);
-renderComponent(filmsExtraElementMostCommented, getFilmCardTemplate(getFilmsArray(FILMS_TO_SHOW)), `beforeend`);
-renderComponent(filmsExtraElementMostCommented, getFilmCardTemplate(getFilmsArray(FILMS_TO_SHOW)), `beforeend`);
-
-
-const footerElement = document.querySelector(`.footer`);
-renderComponent(footerElement, getFilmDetailsTemplate(filmDetails, comments), `afterend`);
+const topRatedMocks = new Array(TOP_RATED_FILMS).fill(``).map(getFilm);
+const mostViewedMocks = new Array(MOST_COMMENTED_FILMS).fill(``).map(getFilm);
+topRatedMocks.forEach((mock) => renderFilm(mock, filmsExtraElementTopRated));
+mostViewedMocks.forEach((mock) => renderFilm(mock, filmsExtraElementMostCommented));

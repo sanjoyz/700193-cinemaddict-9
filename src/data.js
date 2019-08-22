@@ -5,7 +5,7 @@ const getRandomNumber = (max) => {
 };
 
 const getRandomDescription = (string) => {
-  const arr = string.replace(/([.?!])\s*(?=[A-Z])/g, `$1|`).split(`|`); // http://qaru.site/questions/309544/split-string-into-sentences-in-javascript
+  const arr = string.replace(/([.?!])\s*(?=[A-Z])/g, `$1|`).split(`|`);
   let result = ``;
   for (let i = 0; i < getRandomNumber(2) + 1; i++) {
     result = result.concat(`${arr[getRandomNumber(arr.length)]}`);
@@ -13,7 +13,7 @@ const getRandomDescription = (string) => {
   return result;
 };
 
-const getFilm = () => ({
+export const getFilm = () => ({
   name: [
     `Made for each other`,
     `Popeye the Sailor Meets Sindbad the Sailor`,
@@ -53,9 +53,66 @@ const getFilm = () => ({
     `Historical`
   ][getRandomNumber(7)],
   duration: `1h32m`,
+  details: {
+    comments: [
+      {
+        emoji: `./images/emoji/smile.png`,
+        text: `Interesting setting and a good cast`,
+        author: `Tim Macoveev`,
+        commentDay: `3 days ago`,
+      },
+      {
+        emoji: `./images/emoji/sleeping.png`,
+        text: `Booooooooooring`,
+        author: `John Doe`,
+        commentDay: `3 days ago`,
+      },
+      {
+        emoji: `./images/emoji/puke.png`,
+        text: `Very very old. Meh`,
+        author: `John Doe`,
+        commentDay: `2 days ago`,
+      },
+      {
+        emoji: `./images/emoji/angry.png`,
+        text: `Almost two hours? Seriously?`,
+        author: `John Doe`,
+        commentDay: `Today`,
+      },
+    ],
+    name: `The Great Flamarion`,
+    nameOriginal: `The Great Flamarion`,
+    director: `Anthony Mann`,
+    poster: `./images/posters/the-great-flamarion.jpg`,
+    writers: [
+      `Anne Wigton`,
+      `Heinz Herald`,
+      `Richard Weil`,
+    ],
+    actors: [
+      `Erich von Stoheim`,
+      `Mary Beth Hughes`,
+      `Dan Duryea`
+    ],
+    releaseDate: `30 March 1945`,
+    duration: `1h 18m`,
+    country: `USA`,
+    genres: [
+      `Drama`,
+      `Film-Noir`,
+      `Mystery`,
+    ],
+    description: `The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events
+    leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous
+    marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie
+    (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with
+    Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.`,
+    age: `18+`,
+    rating: `8.9`,
+  }
 });
 
-export const getFilmsArray = (number) => new Array(number).fill(``).map(() => getFilm());
+// export const getFilmsArray = (number) => new Array(number).fill(``).map(() => getFilm());
 
 export const filters = [
   {
@@ -84,38 +141,6 @@ export const filters = [
     isChecked: false,
   }
 ];
-
-export const filmDetails = {
-  name: `The Great Flamarion`,
-  nameOriginal: `The Great Flamarion`,
-  director: `Anthony Mann`,
-  poster: `./images/posters/the-great-flamarion.jpg`,
-  writers: [
-    `Anne Wigton`,
-    `Heinz Herald`,
-    `Richard Weil`,
-  ],
-  actors: [
-    `Erich von Stoheim`,
-    `Mary Beth Hughes`,
-    `Dan Duryea`
-  ],
-  releaseDate: `30 March 1945`,
-  duration: `1h 18m`,
-  country: `USA`,
-  genres: [
-    `Drama`,
-    `Film-Noir`,
-    `Mystery`,
-  ],
-  description: `The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events
-  leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous
-  marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie
-  (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with
-  Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.`,
-  age: `18+`,
-  rating: `8.9`,
-};
 
 export const comments = [
   {

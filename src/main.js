@@ -50,9 +50,17 @@ const renderFilm = (filmMock, renderContainer) => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     }
   };
+  // Попап по клику: постер, название, комменты
   film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
     render(mainElement, filmDetails.getElement(), `beforeend`);
   });
+  film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
+    render(mainElement, filmDetails.getElement(), `beforeend`);
+  });
+  film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
+    render(mainElement, filmDetails.getElement(), `beforeend`);
+  });
+  // --
   const onCloseButtonClick = () => {
     deleteElement(document.querySelector(`.film-details`));
   };

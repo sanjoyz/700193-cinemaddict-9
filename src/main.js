@@ -4,6 +4,7 @@ import {getNavigationTemplate} from './components/navigation.js';
 import {getSortingTemplate} from './components/sort.js';
 import {getFilmListTemplate} from './components/film-list.js';
 import {getShowMoreButtonTemplate} from './components/show-more-button.js';
+import {getNoFilmsTemplate} from './components/no-films.js';
 import {filters} from './data.js';
 import {comments} from './data.js';
 import Film from './components/film-card.js';
@@ -53,26 +54,40 @@ const renderFilm = (filmMock, renderContainer) => {
   // Попап по клику: постер, название, комменты
   film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
     render(mainElement, filmDetails.getElement(), `beforeend`);
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
   film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
     render(mainElement, filmDetails.getElement(), `beforeend`);
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
   film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
     render(mainElement, filmDetails.getElement(), `beforeend`);
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
-  // --
+  // Если фокус в поле ввода комментария удаляем обработчик esc
+  filmDetails.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
+  // Если поле ввода потеряло фокус, добавляет обработчик esc
+  filmDetails.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+  //
   const onCloseButtonClick = () => {
     deleteElement(document.querySelector(`.film-details`));
   };
   filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
-  filmDetails.getElement().addEventListener(`keydown`, onEscKeyDown);
 
   render(renderContainer, film.getElement(), Position.BEFOREEND);
 };
 
 const filmMocks = new Array(FILMS_TO_SHOW).fill(``).map(getFilm);
-filmMocks.forEach((filmMock) => renderFilm(filmMock, filmsListContainerElement));
-
+if (filmMocks.length > 0) {
+  filmMocks.forEach((filmMock) => renderFilm(filmMock, filmsListContainerElement));
+} else {
+  const noFilmsElement = createElement(getNoFilmsTemplate());
+  render(filmsListContainerElement, noFilmsElement, `beforeend`);
+}
 const onshowMoreButtonClick = () => {
   filmMocks.forEach((filmMock) => renderFilm(filmMock, filmsListContainerElement));
 };

@@ -1,5 +1,7 @@
-export const getFilmListTemplate = () => (
-  `<section class="films">
+import AbstractComponent from '../components/abstract-component.js';
+export default class FilmList extends AbstractComponent {
+  getTemplate() {
+    return `<section class="films">
     <section class="films-list">
       <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
       <div class="films-list__container">
@@ -16,4 +18,6 @@ export const getFilmListTemplate = () => (
       </div>
     </section>
   </section>
-  `).trim();
+  `.trim();
+  }
+}

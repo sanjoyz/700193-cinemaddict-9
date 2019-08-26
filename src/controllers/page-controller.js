@@ -27,8 +27,8 @@ export default class PageController {
     };
     this._showMoreButton.getElement().addEventListener(`click`, onShowMoreButtonClick);
 
-    const filmsExtraElementTopRated = document.querySelector(`body > main > section > section:nth-child(2) > .films-list__container`);
-    const filmsExtraElementMostCommented = document.querySelector(`body > main > section > section:nth-child(3) > .films-list__container`);
+    const filmsExtraElementTopRated = document.querySelector(`.films-list--extra.top-rated > div`);
+    const filmsExtraElementMostCommented = document.querySelector(`.films-list--extra.most-commented > div`);
     const topRatedMocks = new Array(TOP_RATED_FILMS).fill(``).map(getFilm);
     const mostViewedMocks = new Array(MOST_COMMENTED_FILMS).fill(``).map(getFilm);
     topRatedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementTopRated));

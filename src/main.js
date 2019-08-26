@@ -20,29 +20,7 @@ const navigationElement = createElement(getNavigationTemplate(filters));
 render(mainElement, navigationElement, `beforeend`);
 const sortingElement = createElement(getSortingTemplate());
 render(mainElement, sortingElement, `beforeend`);
-// const filmListElement = createElement(getFilmListTemplate());
-// render(mainElement, filmListElement, `beforeend`);
-// const filmsListElement = document.querySelector(`.films-list`);
-// const showMoreButtonElement = createElement(getShowMoreButtonTemplate());
-// render(filmsListElement, showMoreButtonElement, `beforeend`);
 
 const filmMocks = new Array(FILMS_TO_SHOW).fill(``).map(getFilm);
 const pageController = new PageController(mainElement, filmMocks);
 pageController.init();
-
-/*
-if (filmMocks.length > 0) {
-  filmMocks.forEach((filmMock) => renderFilm(filmMock, filmsListContainerElement));
-} else {
-  const noFilmsElement = createElement(getNoFilmsTemplate());
-  render(filmsListContainerElement, noFilmsElement, `beforeend`);
-}
-const onshowMoreButtonClick = () => {
-  filmMocks.forEach((filmMock) => renderFilm(filmMock, filmsListContainerElement));
-};
-
-const showMoreButton = document.querySelector(`.films-list__show-more`);
-showMoreButton.addEventListener(`click`, onshowMoreButtonClick);
-
-
-*/

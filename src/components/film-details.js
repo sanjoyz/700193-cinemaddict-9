@@ -1,6 +1,7 @@
-import {createElement} from '../utils.js';
-export default class FilmDetails {
+import AbstractComponent from '../components/abstract-component.js';
+export default class FilmDetails extends AbstractComponent {
   constructor(film) {
+    super();
     this._poster = film.details.poster;
     this._age = film.details.age;
     this._name = film.details.name;
@@ -15,18 +16,6 @@ export default class FilmDetails {
     this._description = film.details.description;
     this._comments = film.details.comments;
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-
   getTemplate() {
     return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">

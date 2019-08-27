@@ -1,8 +1,5 @@
 import {getSearchTemplate} from './components/search.js';
 import {getProfileTemplate} from './components/profile.js';
-// import {getNavigationTemplate} from './components/navigation.js';
-import {getNoFilmsTemplate} from './components/no-films.js';
-import {filters} from './data.js';
 import {createElement} from './utils.js';
 import {render} from './utils.js';
 import PageController from './controllers/page-controller.js';
@@ -15,8 +12,6 @@ const searchElement = createElement(getSearchTemplate());
 render(headerElement, searchElement, `beforeend`);
 const profileElement = createElement(getProfileTemplate());
 render(headerElement, profileElement, `beforeend`);
-// const navigationElement = createElement(getNavigationTemplate(filters));
-// render(mainElement, navigationElement, `beforeend`);
 
 const filmMocks = new Array(FILMS_TO_SHOW).fill(``).map(getFilm);
 const pageController = new PageController(mainElement, filmMocks);

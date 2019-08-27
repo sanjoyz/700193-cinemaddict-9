@@ -23,16 +23,15 @@ export default class PageController {
     this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
   }
   init() {
-    const filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
     render(this._container, this._navigation.getElement(filters), Position.BEFOREEND);
     render(this._container, this._sort.getElement(), Position.BEFOREEND);
     render(this._container, this._filmsList.getElement(), Position.BEFOREEND);
-    this._films.forEach((filmMock) => this._renderFilm(filmMock, filmsListContainer));
+    this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
     this._sort.getElement().addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
     const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
     const onShowMoreButtonClick = () => {
-      this._films.forEach((filmMock) => this._renderFilm(filmMock, filmsListContainer));
+      this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
     };
     this._showMoreButton.getElement().addEventListener(`click`, onShowMoreButtonClick);
 
@@ -92,7 +91,7 @@ export default class PageController {
     if (evt.target.tagName !== `A`) {
       return;
     }
-    this._filmsList.getElement().innerHTML = ``;
+    this._filmsListContainer.innerHTML = ``;
     switch (evt.target.dataset.sortType) {
       case `default`:
         this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));

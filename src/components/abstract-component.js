@@ -6,9 +6,9 @@ export default class AbstractComponent {
     }
     this._element = null;
   }
-  getElement() {
+  getElement(x) {
     if (!this._element) {
-      this._element = createElement(this.getTemplate());
+      this._element = createElement(this.getTemplate(x));
     }
     return this._element;
   }

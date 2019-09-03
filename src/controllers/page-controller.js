@@ -22,6 +22,11 @@ export default class PageController {
     this._navigation = new Navigation();
     this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
   }
+  _onDataChange(newData, oldData) {
+    this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
+    this._renderBoard(this._tasks);
+  }
+
   init() {
     render(this._container, this._navigation.getElement(filters), Position.BEFOREEND);
     render(this._container, this._sort.getElement(), Position.BEFOREEND);

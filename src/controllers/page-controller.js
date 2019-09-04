@@ -1,5 +1,4 @@
-import Film from '../components/film-card.js';
-import FilmDetails from '../components/film-details.js';
+
 import FilmList from '../components/film-list.js';
 import ShowMoreButton from '../components/show-more-button.js';
 import Sort from '../components/sort.js';
@@ -7,11 +6,8 @@ import Navigation from '../components/navigation.js';
 import {render} from '../utils.js';
 import {filters} from '../data.js';
 import {deleteElement} from '../utils.js';
-import {getFilm} from '../data.js';
 import {Position} from '../utils.js';
 const FILMS_WE_HAVE = 15;
-const TOP_RATED_FILMS = 2;
-const MOST_COMMENTED_FILMS = 2;
 export default class PageController {
   constructor(container, films) {
     this._container = container;
@@ -23,8 +19,18 @@ export default class PageController {
     this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
   }
   _onDataChange(newData, oldData) {
-    this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
-    this._renderBoard(this._tasks);
+    this._films[this._films.findIndex((it) => it === oldData)] = newData;
+    this._renderFilms(this._films);
+  }
+  // переписать эту функцию
+  _renderFilms(films) {
+    deleteElement(this._filmsList.getElement());
+    deleteElement(this._sort.getElement());
+    this._sort.removeElement();
+    this._filmsList.removeElement();
+    render(this._board.getElement(), this._taskList.getElement(), Position.AFTERBEGIN);
+    render(this._board.getElement(), this._sort.getElement(), Position.AFTERBEGIN);
+    films.forEach((filmMock) => this._renderFilm(filmMock));
   }
 
   init() {
@@ -39,56 +45,6 @@ export default class PageController {
       this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
     };
     this._showMoreButton.getElement().addEventListener(`click`, onShowMoreButtonClick);
-
-    const filmsExtraElementTopRated = document.querySelector(`.films-list--extra.top-rated .films-list__container`);
-    const filmsExtraElementMostCommented = document.querySelector(`.films-list--extra.most-commented .films-list__container`);
-    const topRatedMocks = new Array(TOP_RATED_FILMS).fill(``).map(getFilm);
-    const mostViewedMocks = new Array(MOST_COMMENTED_FILMS).fill(``).map(getFilm);
-    topRatedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementTopRated));
-    mostViewedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementMostCommented));
-  }
-  _renderFilm(filmMock, renderContainer) {
-    const mainElement = document.querySelector(`.main`);
-    const film = new Film(filmMock);
-    const filmDetails = new FilmDetails(filmMock);
-    if (document.querySelectorAll(`.film-card`).length > FILMS_WE_HAVE) {
-      this._filmsList.querySelector(`.films-list__show-more`).classList.add(`visually-hidden`);
-      return;
-    }
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        deleteElement(document.querySelector(`.film-details`));
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-      // Попап по клику: постер, название, комменты
-    film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    // Если фокус в поле ввода комментария удаляем обработчик esc
-    filmDetails.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-    // Если поле ввода потеряло фокус, добавляет обработчик esc
-    filmDetails.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    //
-    const onCloseButtonClick = () => {
-      deleteElement(document.querySelector(`.film-details`));
-    };
-    filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
-
-    render(renderContainer, film.getElement(), Position.BEFOREEND);
   }
   _onSortLinkClick(evt) {
     evt.preventDefault();

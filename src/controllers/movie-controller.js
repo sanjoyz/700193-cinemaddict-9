@@ -1,6 +1,6 @@
 import Film from '../components/film-card.js';
 import FilmDetails from '../components/film-details.js';
-import {Position} from "../utils.js/";
+import {Position} from '../utils.js/';
 import {getFilm} from '../data.js';
 import {render} from '../utils.js';
 import {deleteElement} from '../utils.js';

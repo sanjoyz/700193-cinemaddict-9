@@ -1,4 +1,4 @@
-
+import {Position} from '../utils.js';
 import FilmList from '../components/film-list.js';
 import ShowMoreButton from '../components/show-more-button.js';
 import Sort from '../components/sort.js';
@@ -6,9 +6,8 @@ import Navigation from '../components/navigation.js';
 import MovieController from '../controllers/movie-controller.js';
 import {render} from '../utils.js';
 import {filters} from '../data.js';
-import {deleteElement} from '../utils.js';
-import {Position} from '../utils.js';
-const FILMS_WE_HAVE = 15;
+// import {deleteElement} from '../utils.js';
+// import {Position} from '../utils.js';
 export default class PageController {
   constructor(container, films) {
     this._container = container;
@@ -26,6 +25,10 @@ export default class PageController {
     this._films[this._films.findIndex((it) => it === oldData)] = newData;
     this._renderFilms(this._films);
   }
+  _onChangeView() {
+    this._subscriptions.forEach((it) => it());
+  }
+
   // переписать эту функцию
   _renderFilms(films) {
     /* deleteElement(this._filmsListContainer.getElement());

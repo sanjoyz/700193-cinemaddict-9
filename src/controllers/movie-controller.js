@@ -1,10 +1,12 @@
 import Film from '../components/film-card.js';
 import FilmDetails from '../components/film-details.js';
+import {Position} from "../utils.js/";
 import {getFilm} from '../data.js';
 import {render} from '../utils.js';
 import {deleteElement} from '../utils.js';
 const TOP_RATED_FILMS = 2;
 const MOST_COMMENTED_FILMS = 2;
+const FILMS_WE_HAVE = 15;
 
 export default class MovieController {
   constructor(container, data, onDataChange, onChangeView) {
@@ -14,16 +16,16 @@ export default class MovieController {
     this._onDataChange = onDataChange;
     this._film = new Film(data);
     this._filmDetails = new FilmDetails(data);
+    this._mainElement = document.querySelector(`.main`);
     this.init();
   }
   _renderFilm(filmMock, renderContainer) {
-    const mainElement = document.querySelector(`.main`);
-    const film = new Film(filmMock);
-    const filmDetails = new FilmDetails(filmMock);
+  // const mainElement = document.querySelector(`.main`)
     if (document.querySelectorAll(`.film-card`).length > FILMS_WE_HAVE) {
       this._filmsList.querySelector(`.films-list__show-more`).classList.add(`visually-hidden`);
       return;
     }
+    render(renderContainer, this._film);
   }
 
   init() {
@@ -42,32 +44,32 @@ export default class MovieController {
       }
     };
     // Попап по клику: постер, название, комменты
-    film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
+    this._film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
+      render(this._mainElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
     });
-    film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
+    this._film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
+      render(this._mainElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
     });
-    film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
+    this._film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
+      render(this._mainElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
     });
     // Если фокус в поле ввода комментария удаляем обработчик esc
-    filmDetails.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
+    this._filmDetails.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
     // Если поле ввода потеряло фокус, добавляет обработчик esc
-    filmDetails.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
+    this._filmDetails.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
       document.addEventListener(`keydown`, onEscKeyDown);
     });
     //
     const onCloseButtonClick = () => {
       deleteElement(document.querySelector(`.film-details`));
     };
-    filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
+    this._filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
 
-    render(renderContainer, film.getElement(), Position.BEFOREEND);
+    render(this._container, this._film.getElement(), Position.BEFOREEND);
   }
 }

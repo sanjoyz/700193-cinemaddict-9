@@ -8,19 +8,14 @@ const MOST_COMMENTED_FILMS = 2;
 
 export default class MovieController {
   constructor(container, data, onDataChange, onChangeView) {
+    this._container = container;
+    this._data = data;
+    this._onChangeView = onChangeView;
     this._onDataChange = onDataChange;
+    this._film = new Film(data);
+    this._filmDetails = new FilmDetails(data);
+    this.init();
   }
-  init() {
-    // попап
-    const filmsExtraElementTopRated = document.querySelector(`.films-list--extra.top-rated .films-list__container`);
-    const filmsExtraElementMostCommented = document.querySelector(`.films-list--extra.most-commented .films-list__container`);
-    const topRatedMocks = new Array(TOP_RATED_FILMS).fill(``).map(getFilm);
-    const mostViewedMocks = new Array(MOST_COMMENTED_FILMS).fill(``).map(getFilm);
-    topRatedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementTopRated));
-    mostViewedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementMostCommented));
-    };
-  }
-
   _renderFilm(filmMock, renderContainer) {
     const mainElement = document.querySelector(`.main`);
     const film = new Film(filmMock);
@@ -30,6 +25,16 @@ export default class MovieController {
       return;
     }
   }
+
+  init() {
+    // попап
+    const filmsExtraElementTopRated = document.querySelector(`.films-list--extra.top-rated .films-list__container`);
+    const filmsExtraElementMostCommented = document.querySelector(`.films-list--extra.most-commented .films-list__container`);
+    const topRatedMocks = new Array(TOP_RATED_FILMS).fill(``).map(getFilm);
+    const mostViewedMocks = new Array(MOST_COMMENTED_FILMS).fill(``).map(getFilm);
+    topRatedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementTopRated));
+    mostViewedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementMostCommented));
+
     const onEscKeyDown = (evt) => {
       if (evt.key === `Escape` || evt.key === `Esc`) {
         deleteElement(document.querySelector(`.film-details`));
@@ -65,5 +70,4 @@ export default class MovieController {
 
     render(renderContainer, film.getElement(), Position.BEFOREEND);
   }
-
 }

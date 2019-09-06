@@ -3,6 +3,7 @@ import FilmList from '../components/film-list.js';
 import ShowMoreButton from '../components/show-more-button.js';
 import Sort from '../components/sort.js';
 import Navigation from '../components/navigation.js';
+import MovieController from '../controllers/movie-controller.js';
 import {render} from '../utils.js';
 import {filters} from '../data.js';
 import {deleteElement} from '../utils.js';
@@ -12,10 +13,13 @@ export default class PageController {
   constructor(container, films) {
     this._container = container;
     this._films = films;
+    this._subscriptions = [];
     this._filmsList = new FilmList();
     this._showMoreButton = new ShowMoreButton();
     this._sort = new Sort();
     this._navigation = new Navigation();
+    this._onChangeView = this._onChangeView.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
     this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
   }
   _onDataChange(newData, oldData) {
@@ -24,13 +28,17 @@ export default class PageController {
   }
   // переписать эту функцию
   _renderFilms(films) {
-    deleteElement(this._filmsList.getElement());
+    /* deleteElement(this._filmsListContainer.getElement());
     deleteElement(this._sort.getElement());
     this._sort.removeElement();
-    this._filmsList.removeElement();
-    render(this._board.getElement(), this._taskList.getElement(), Position.AFTERBEGIN);
-    render(this._board.getElement(), this._sort.getElement(), Position.AFTERBEGIN);
+    this._filmsList.removeElement();*/
+    // render(this._filmsList.getElement(), this._taskList.getElement(), Position.AFTERBEGIN);
+    // render(this._board.getElement(), this._sort.getElement(), Position.AFTERBEGIN);
     films.forEach((filmMock) => this._renderFilm(filmMock));
+  }
+  _renderFilm(film) {
+    const movieController = new MovieController(this._filmsList, film, this._onDataChange, this._onChangeView);
+    this._subscriptions.push(movieController.setDefaultView.bind(movieController));
   }
 
   init() {
@@ -48,7 +56,6 @@ export default class PageController {
   }
   _onSortLinkClick(evt) {
     evt.preventDefault();
-
     if (evt.target.tagName !== `A`) {
       return;
     }

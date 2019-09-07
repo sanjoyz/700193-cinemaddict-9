@@ -1,6 +1,6 @@
 import AbstractComponent from '../components/abstract-component.js';
 export default class Film extends AbstractComponent {
-  constructor({name, rating, year, duration, genre, poster, description, commentsCount}) {
+  constructor({name, rating, year, duration, genre, poster, description, commentsCount, isAddedToWatchList, isMarkedAsWatched, isFavorite}) {
     super();
     this._name = name;
     this._rating = rating;
@@ -10,6 +10,9 @@ export default class Film extends AbstractComponent {
     this._poster = poster;
     this._description = description;
     this._commentsCount = commentsCount;
+    this._isAddeToWatchList = isAddedToWatchList;
+    this._isMarkedAsWatched = isMarkedAsWatched;
+    this._isFavorite = isFavorite;
   }
   getTemplate() {
     return `<article class="film-card">
@@ -24,9 +27,9 @@ export default class Film extends AbstractComponent {
             <p class="film-card__description">${this._description}</p>
             <a class="film-card__comments">${this._commentsCount} comments</a>
             <form class="film-card__controls">
-              <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-              <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-              <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+              <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${this._isAddeToWatchList ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
+              <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${this._isMarkedAsWatched ? `film-card__controls-item--active` : ``}">Mark as watched</button>
+              <button class="film-card__controls-item button film-card__controls-item--favorite ${this._isFavorite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
             </form>
     </article>`.trim();
   }

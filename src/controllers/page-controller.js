@@ -28,16 +28,20 @@ export default class PageController {
   _onChangeView() {
     this._subscriptions.forEach((it) => it());
   }
-
-  _renderFilms(films) {
-    deleteElement(this._filmsListContainer);
-    this._filmsList.removeElement();
-    render(this._filmsList.getElement(), this._filmsListContainer, Position.AFTERBEGIN);  
-    films.forEach((filmMock) => this._renderFilm(filmMock));
-  }
   _renderFilm(film) {
     const movieController = new MovieController(this._filmsListContainer, film, this._onDataChange, this._onChangeView);
     this._subscriptions.push(movieController.setDefaultView.bind(movieController));
+  }
+  _renderFilms(films) {
+    deleteElement(this._filmsListContainer);
+    this._filmsList.removeElement();
+    render(this._filmsList.getElement(), this._filmsListContainer, Position.AFTERBEGIN);
+    films.forEach((filmMock) => this._renderFilm(filmMock));
+  }
+  // выводим количество фильмов в подвал
+  _renderFooterFilmsNumber() {
+    const footerStatisticElement = document.querySelector(`.footer__statistics`).firstElementChild;
+    footerStatisticElement.textContent = `${this._films.length} movies inside`;
   }
 
   init() {
@@ -52,6 +56,7 @@ export default class PageController {
       this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
     };
     this._showMoreButton.getElement().addEventListener(`click`, onShowMoreButtonClick);
+    this._renderFooterFilmsNumber();
   }
   _onSortLinkClick(evt) {
     evt.preventDefault();

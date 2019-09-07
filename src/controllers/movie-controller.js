@@ -105,7 +105,7 @@ export default class MovieController {
       this._onDataChange(entry, this._data);
     });
   }
-
+  // обработчик кнопки "просмотрен"
   markAsWatchedHandler() {
     this._film.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
@@ -181,7 +181,7 @@ export default class MovieController {
       this._onDataChange(entry, this._data);
     });
   }
-
+  // обработчик кнопки избранное
   addTOFavoriteHanlder() {
     this._film.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, (evt) => {
       evt.preventDefault();

@@ -29,7 +29,6 @@ export default class PageController {
     this._subscriptions.forEach((it) => it());
   }
 
-  // переписать эту функцию
   _renderFilms(films) {
     /* deleteElement(this._filmsListContainer.getElement());
     deleteElement(this._sort.getElement());

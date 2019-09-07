@@ -6,7 +6,7 @@ import Navigation from '../components/navigation.js';
 import MovieController from '../controllers/movie-controller.js';
 import {render} from '../utils.js';
 import {filters} from '../data.js';
-// import {deleteElement} from '../utils.js';
+import {deleteElement} from '../utils.js';
 // import {Position} from '../utils.js';
 export default class PageController {
   constructor(container, films) {
@@ -30,16 +30,13 @@ export default class PageController {
   }
 
   _renderFilms(films) {
-    /* deleteElement(this._filmsListContainer.getElement());
-    deleteElement(this._sort.getElement());
-    this._sort.removeElement();
-    this._filmsList.removeElement();*/
-    // render(this._filmsList.getElement(), this._taskList.getElement(), Position.AFTERBEGIN);
-    // render(this._board.getElement(), this._sort.getElement(), Position.AFTERBEGIN);
+    deleteElement(this._filmsListContainer);
+    this._filmsList.removeElement();
+    render(this._filmsList.getElement(), this._filmsListContainer, Position.AFTERBEGIN);  
     films.forEach((filmMock) => this._renderFilm(filmMock));
   }
   _renderFilm(film) {
-    const movieController = new MovieController(this._filmsList, film, this._onDataChange, this._onChangeView);
+    const movieController = new MovieController(this._filmsListContainer, film, this._onDataChange, this._onChangeView);
     this._subscriptions.push(movieController.setDefaultView.bind(movieController));
   }
 

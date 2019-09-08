@@ -108,7 +108,7 @@ export const getFilm = () => ({
     (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with
     Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.`,
     age: `18+`,
-    rating: `8.9`,    
+    rating: `8.9`,
   },
   isAddedToWatchList: false,
   isMarkedAsWatched: false,

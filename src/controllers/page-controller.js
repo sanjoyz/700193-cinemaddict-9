@@ -19,7 +19,8 @@ export default class PageController {
     this._navigation = new Navigation();
     this._onChangeView = this._onChangeView.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
-    this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
+    // this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
+    this._main = document.querySelector(`main`);
   }
   _onDataChange(newData, oldData) {
     this._films[this._films.findIndex((it) => it === oldData)] = newData;
@@ -29,13 +30,15 @@ export default class PageController {
     this._subscriptions.forEach((it) => it());
   }
   _renderFilm(film) {
-    const movieController = new MovieController(this._filmsListContainer, film, this._onDataChange, this._onChangeView);
+    const movieController = new MovieController(this._filmsList.getElement().querySelector(`.films-list__container`), film, this._onDataChange, this._onChangeView);
     this._subscriptions.push(movieController.setDefaultView.bind(movieController));
   }
   _renderFilms(films) {
-    deleteElement(this._filmsListContainer);
+    // deleteElement(this._filmsListContainer);
+    deleteElement(this._filmsList.getElement());
     this._filmsList.removeElement();
-    render(this._filmsList.getElement(), this._filmsListContainer, Position.AFTERBEGIN);
+    render(this._main, this._filmsList.getElement(), Position.BEFOREEND);
+    render(this._filmsList.getElement(), this._filmsList.getElement().querySelector(`.films-list__container`), Position.AFTERBEGIN);
     films.forEach((filmMock) => this._renderFilm(filmMock));
   }
   // выводим количество фильмов в подвал

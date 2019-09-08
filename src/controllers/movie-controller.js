@@ -21,6 +21,7 @@ export default class MovieController {
     this.addToWatchListHandler();
     this.markAsWatchedHandler();
     this.addToFavoriteHanlder();
+    this.popupAddToWatchListHandler();
   }
   _renderFilm(filmMock, renderContainer) {
     if (document.querySelectorAll(`.film-card`).length > FILMS_WE_HAVE) {
@@ -106,7 +107,7 @@ export default class MovieController {
     this._film.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
       const entry = this._getEntryObject();
-      entry.isAddedToWatchList = this._data.isAddedToWatchList ? false : true;
+      entry.isAddedToWatchList = this._film._isAddedToWatchList ? false : true;
       this._onDataChange(entry, this._data);
     });
   }
@@ -115,7 +116,7 @@ export default class MovieController {
     this._film.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
       const entry = this._getEntryObject();
-      entry.isMarkedAsWatched = this._film.isMarkedAsWatched ? false : true;
+      entry.isMarkedAsWatched = this._film._isMarkedAsWatched ? false : true;
       this._onDataChange(entry, this._data);
     });
   }
@@ -124,7 +125,15 @@ export default class MovieController {
     this._film.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, (evt) => {
       evt.preventDefault();
       const entry = this._getEntryObject();
-      entry.isFavorite = this._film.isFavorite ? false : true;
+      entry.isFavorite = this._film._isFavorite ? false : true;
+      this._onDataChange(entry, this._data);
+    });
+  }
+  // обработчики в попапе
+  popupAddToWatchListHandler() {
+    this._filmDetails.getElement().querySelector(`.film-details__control-label--watchlist`).addEventListener(`click`, () => {
+      const entry = this._getEntryObject();
+      entry.isAddedToWatchList = this._filmDetails._isAddedToWatchList ? false : true;
       this._onDataChange(entry, this._data);
     });
   }

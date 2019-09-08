@@ -1,13 +1,10 @@
-import {Position} from '../utils.js';
+import {Position, render, deleteElement} from '../utils.js';
+import {filters} from '../data.js';
 import FilmList from '../components/film-list.js';
 import ShowMoreButton from '../components/show-more-button.js';
 import Sort from '../components/sort.js';
 import Navigation from '../components/navigation.js';
 import MovieController from '../controllers/movie-controller.js';
-import {render} from '../utils.js';
-import {filters} from '../data.js';
-import {deleteElement} from '../utils.js';
-// import {Position} from '../utils.js';
 export default class PageController {
   constructor(container, films) {
     this._container = container;
@@ -19,8 +16,8 @@ export default class PageController {
     this._navigation = new Navigation();
     this._onChangeView = this._onChangeView.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
-    // this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
-    this._main = document.querySelector(`main`);
+    this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
+    // this._main = document.querySelector(`main`);
   }
   _onDataChange(newData, oldData) {
     this._films[this._films.findIndex((it) => it === oldData)] = newData;
@@ -34,12 +31,13 @@ export default class PageController {
     this._subscriptions.push(movieController.setDefaultView.bind(movieController));
   }
   _renderFilms(films) {
-    // deleteElement(this._filmsListContainer);
     deleteElement(this._filmsList.getElement());
     this._filmsList.removeElement();
-    render(this._main, this._filmsList.getElement(), Position.BEFOREEND);
+    render(this._container, this._filmsList.getElement(), Position.BEFOREEND);
     render(this._filmsList.getElement(), this._filmsList.getElement().querySelector(`.films-list__container`), Position.AFTERBEGIN);
     films.forEach((filmMock) => this._renderFilm(filmMock));
+    const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
+    render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
   }
   // выводим количество фильмов в подвал
   _renderFooterFilmsNumber() {
@@ -51,12 +49,12 @@ export default class PageController {
     render(this._container, this._navigation.getElement(filters), Position.BEFOREEND);
     render(this._container, this._sort.getElement(), Position.BEFOREEND);
     render(this._container, this._filmsList.getElement(), Position.BEFOREEND);
-    this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+    this._films.forEach((filmMock) => this._renderFilm(filmMock));
     this._sort.getElement().addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
     const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
     const onShowMoreButtonClick = () => {
-      this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+      this._films.forEach((filmMock) => this._renderFilm(filmMock));
     };
     this._showMoreButton.getElement().addEventListener(`click`, onShowMoreButtonClick);
     this._renderFooterFilmsNumber();
@@ -69,15 +67,15 @@ export default class PageController {
     this._filmsListContainer.innerHTML = ``;
     switch (evt.target.dataset.sortType) {
       case `default`:
-        this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+        this._films.forEach((filmMock) => this._renderFilm(filmMock));
         break;
       case `by-date`:
         const sortedByDateFilms = this._films.slice().sort((a, b) => a.year - b.year);
-        sortedByDateFilms.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+        sortedByDateFilms.forEach((filmMock) => this._renderFilm(filmMock));
         break;
       case `by-rating`:
         const sortedByRatingFilms = this._films.slice().sort((a, b) => a.rating - b.rating);
-        sortedByRatingFilms.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+        sortedByRatingFilms.forEach((filmMock) => this._renderFilm(filmMock));
         break;
     }
   }

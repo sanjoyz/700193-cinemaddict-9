@@ -13,6 +13,7 @@ export default class Film extends AbstractComponent {
     this._isAddeToWatchList = isAddedToWatchList;
     this._isMarkedAsWatched = isMarkedAsWatched;
     this._isFavorite = isFavorite;
+    this._element = null;
   }
   getTemplate() {
     return `<article class="film-card">

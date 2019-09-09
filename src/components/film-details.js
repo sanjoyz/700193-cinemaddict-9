@@ -15,7 +15,11 @@ export default class FilmDetails extends AbstractComponent {
     this._genres = film.details.genres;
     this._description = film.details.description;
     this._comments = film.details.comments;
+    this._isAddedToWatchList = false;
+    this._isMarkedAsWatched = false;
+    this._isFavorite = false;
   }
+
   getTemplate() {
     return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">

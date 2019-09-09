@@ -109,7 +109,10 @@ export const getFilm = () => ({
     Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.`,
     age: `18+`,
     rating: `8.9`,
-  }
+  },
+  isAddedToWatchList: false,
+  isMarkedAsWatched: false,
+  isFavorite: false,
 });
 
 // export const getFilmsArray = (number) => new Array(number).fill(``).map(() => getFilm());

@@ -1,108 +1,81 @@
-import Film from '../components/film-card.js';
-import FilmDetails from '../components/film-details.js';
+import {Position, render, deleteElement} from '../utils.js';
+import {filters} from '../data.js';
 import FilmList from '../components/film-list.js';
 import ShowMoreButton from '../components/show-more-button.js';
 import Sort from '../components/sort.js';
 import Navigation from '../components/navigation.js';
-import {render} from '../utils.js';
-import {filters} from '../data.js';
-import {deleteElement} from '../utils.js';
-import {getFilm} from '../data.js';
-import {Position} from '../utils.js';
-const FILMS_WE_HAVE = 15;
-const TOP_RATED_FILMS = 2;
-const MOST_COMMENTED_FILMS = 2;
+import MovieController from '../controllers/movie-controller.js';
 export default class PageController {
   constructor(container, films) {
     this._container = container;
     this._films = films;
+    this._subscriptions = [];
     this._filmsList = new FilmList();
     this._showMoreButton = new ShowMoreButton();
     this._sort = new Sort();
     this._navigation = new Navigation();
+    this._onChangeView = this._onChangeView.bind(this);
+    this._onDataChange = this._onDataChange.bind(this);
     this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
+    // this._main = document.querySelector(`main`);
   }
+  _onDataChange(newData, oldData) {
+    this._films[this._films.findIndex((it) => it === oldData)] = newData;
+    this._renderFilms(this._films);
+  }
+  _onChangeView() {
+    this._subscriptions.forEach((it) => it());
+  }
+  _renderFilm(film) {
+    const movieController = new MovieController(this._filmsList.getElement().querySelector(`.films-list__container`), film, this._onDataChange, this._onChangeView);
+    this._subscriptions.push(movieController.setDefaultView.bind(movieController));
+  }
+  _renderFilms(films) {
+    deleteElement(this._filmsList.getElement());
+    this._filmsList.removeElement();
+    render(this._container, this._filmsList.getElement(), Position.BEFOREEND);
+    render(this._filmsList.getElement(), this._filmsList.getElement().querySelector(`.films-list__container`), Position.AFTERBEGIN);
+    films.forEach((filmMock) => this._renderFilm(filmMock));
+    const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
+    render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
+  }
+  // выводим количество фильмов в подвал
+  _renderFooterFilmsNumber() {
+    const footerStatisticElement = document.querySelector(`.footer__statistics`).firstElementChild;
+    footerStatisticElement.textContent = `${this._films.length} movies inside`;
+  }
+
   init() {
     render(this._container, this._navigation.getElement(filters), Position.BEFOREEND);
     render(this._container, this._sort.getElement(), Position.BEFOREEND);
     render(this._container, this._filmsList.getElement(), Position.BEFOREEND);
-    this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+    this._films.forEach((filmMock) => this._renderFilm(filmMock));
     this._sort.getElement().addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
     const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
     const onShowMoreButtonClick = () => {
-      this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+      this._films.forEach((filmMock) => this._renderFilm(filmMock));
     };
     this._showMoreButton.getElement().addEventListener(`click`, onShowMoreButtonClick);
-
-    const filmsExtraElementTopRated = document.querySelector(`.films-list--extra.top-rated .films-list__container`);
-    const filmsExtraElementMostCommented = document.querySelector(`.films-list--extra.most-commented .films-list__container`);
-    const topRatedMocks = new Array(TOP_RATED_FILMS).fill(``).map(getFilm);
-    const mostViewedMocks = new Array(MOST_COMMENTED_FILMS).fill(``).map(getFilm);
-    topRatedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementTopRated));
-    mostViewedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementMostCommented));
-  }
-  _renderFilm(filmMock, renderContainer) {
-    const mainElement = document.querySelector(`.main`);
-    const film = new Film(filmMock);
-    const filmDetails = new FilmDetails(filmMock);
-    if (document.querySelectorAll(`.film-card`).length > FILMS_WE_HAVE) {
-      this._filmsList.querySelector(`.films-list__show-more`).classList.add(`visually-hidden`);
-      return;
-    }
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        deleteElement(document.querySelector(`.film-details`));
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-      // Попап по клику: постер, название, комменты
-    film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
-      render(mainElement, filmDetails.getElement(), `beforeend`);
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    // Если фокус в поле ввода комментария удаляем обработчик esc
-    filmDetails.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-    // Если поле ввода потеряло фокус, добавляет обработчик esc
-    filmDetails.getElement().querySelector(`textarea`).addEventListener(`blur`, () => {
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-    //
-    const onCloseButtonClick = () => {
-      deleteElement(document.querySelector(`.film-details`));
-    };
-    filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
-
-    render(renderContainer, film.getElement(), Position.BEFOREEND);
+    this._renderFooterFilmsNumber();
   }
   _onSortLinkClick(evt) {
     evt.preventDefault();
-
     if (evt.target.tagName !== `A`) {
       return;
     }
     this._filmsListContainer.innerHTML = ``;
     switch (evt.target.dataset.sortType) {
       case `default`:
-        this._films.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+        this._films.forEach((filmMock) => this._renderFilm(filmMock));
         break;
       case `by-date`:
         const sortedByDateFilms = this._films.slice().sort((a, b) => a.year - b.year);
-        sortedByDateFilms.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+        sortedByDateFilms.forEach((filmMock) => this._renderFilm(filmMock));
         break;
       case `by-rating`:
         const sortedByRatingFilms = this._films.slice().sort((a, b) => a.rating - b.rating);
-        sortedByRatingFilms.forEach((filmMock) => this._renderFilm(filmMock, this._filmsListContainer));
+        sortedByRatingFilms.forEach((filmMock) => this._renderFilm(filmMock));
         break;
     }
   }

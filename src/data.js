@@ -1,122 +1,125 @@
+// import moment from 'moment'
+import {getRandomNumber} from './utils.js';
+
+const MOCK_TITLES = [`Made for each other`,
+  `Popeye the Sailor Meets Sindbad the Sailor`,
+  `Santa Claus Conquers the Martians`,
+  `The Dance of Life`,
+  `Sagebrush Trail`,
+  `The Man with the Golden Arm`,
+  `The Great Flamarion`,
+  `The Shawshank Redemption`,
+  `The Green Mile`,
+  `Forrest Gump`,
+  `Schindler's List`,
+  `Intouchables`,
+  `Léon`,
+  `Inception`,
+  `The Lion King`
+];
+const MOCK_POSTERS = [
+  `./images/posters/made-for-each-other.png`,
+  `./images/posters/popeye-meets-sinbad.png`,
+  `./images/posters/sagebrush-trail.jpg`,
+  `./images/posters/santa-claus-conquers-the-martians.jpg`,
+  `./images/posters/the-dance-of-life.jpg`,
+  `./images/posters/the-great-flamarion.jpg`,
+  `./images/posters/the-man-with-the-golden-arm.jpg`
+];
 const DESCRIPTION_STRING = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.`;
-
-const getRandomNumber = (max) => {
-  return Math.floor(Math.random() * max);
-};
-
+const MOCK_ORIGINAL_NAMES = [`Made for each other`,
+  `Popeye the Sailor Meets Sindbad the Sailor`,
+  `Santa Claus Conquers the Martians`,
+  `The Dance of Life`,
+  `Sagebrush Trail`,
+  `The Man with the Golden Arm`,
+  `The Great Flamarion`,
+  `The Shawshank Redemption`,
+  `The Green Mile`,
+  `Forrest Gump`,
+  `Schindler's List`,
+  `Intouchables`,
+  `Léon`,
+  `Inception`,
+  `The Lion King`,
+];
+const MOCK_COUNTRIES = [
+  `USA`,
+  `Russia`,
+  `Italy`,
+  `Japan`,
+  `Germany`,
+  `Mexica`,
+  `India`,
+];
+const MOCK_NAMES = [
+  `Anne Wigton`,
+  `Heinz Herald`,
+  `Richard Weil`,
+  `Erich von Stoheim`,
+  `Mary Beth Hughes`,
+  `Dan Duryea`,
+  `Sherman Huff`,
+  `Otis Hodges`,
+  `John Doe`,
+  `Tim Macoeev`
+];
+const MOCK_EMOJIS = [
+  `./images/emoji/smile.png`,
+  `./images/emoji/sleeping.png`,
+  `./images/emoji/puke.png`,
+  `./images/emoji/angry.png`,
+];
+const MOCK_COMMENTS_TEXT = [
+  `Interesting setting and a good cast`,
+  `Booooooooooring`,
+  `Very very old. Meh`,
+  `Almost two hours? Seriously?`,
+];
 const getRandomDescription = (string) => {
   const arr = string.replace(/([.?!])\s*(?=[A-Z])/g, `$1|`).split(`|`);
   let result = ``;
-  for (let i = 0; i < getRandomNumber(2) + 1; i++) {
-    result = result.concat(`${arr[getRandomNumber(arr.length)]}`);
+  for (let i = 0; i < getRandomNumber(1, 3); i++) {
+    result = result.concat(`${arr[getRandomNumber(0, arr.length - 1)]}`);
   }
   return result;
 };
+const getRandomName = () => {
+  return MOCK_NAMES[getRandomNumber(0, MOCK_NAMES.length - 1)];
+};
+const getComment = () => ({
+  emoji: MOCK_EMOJIS[getRandomNumber(0, MOCK_EMOJIS.length - 1)],
+  text: MOCK_COMMENTS_TEXT[getRandomNumber(0, MOCK_COMMENTS_TEXT.length - 1)],
+  author: getRandomName(MOCK_NAMES),
+  commentDay: `${getRandomNumber(0, 10)} days ago`,
+});
 
 export const getFilm = () => ({
-  name: [
-    `Made for each other`,
-    `Popeye the Sailor Meets Sindbad the Sailor`,
-    `Santa Claus Conquers the Martians`,
-    `The Dance of Life`,
-    `Sagebrush Trail`,
-    `The Man with the Golden Arm`,
-    `The Great Flamarion`,
-    `The Shawshank Redemption`,
-    `The Green Mile`,
-    `Forrest Gump`,
-    `Schindler's List`,
-    `Intouchables`,
-    `Léon`,
-    `Inception`,
-    `The Lion King`
-  ][getRandomNumber(15)],
-  poster: [
-    `./images/posters/made-for-each-other.png`,
-    `./images/posters/popeye-meets-sinbad.png`,
-    `./images/posters/sagebrush-trail.jpg`,
-    `./images/posters/santa-claus-conquers-the-martians.jpg`,
-    `./images/posters/the-dance-of-life.jpg`,
-    `./images/posters/the-great-flamarion.jpg`,
-    `./images/posters/the-man-with-the-golden-arm.jpg`
-  ][getRandomNumber(7)],
+  name: MOCK_TITLES[getRandomNumber(0, MOCK_TITLES.length - 1)],
+  nameOriginal: MOCK_ORIGINAL_NAMES[getRandomNumber(0, MOCK_ORIGINAL_NAMES.length)],
+  poster: MOCK_POSTERS[getRandomNumber(0, MOCK_POSTERS.length - 1)],
   description: getRandomDescription(DESCRIPTION_STRING),
-  rating: getRandomNumber(10),
-  commentsCount: getRandomNumber(8),
-  year: 1950 + getRandomNumber(70),
-  genre: [
+  rating: getRandomNumber(0, 11),
+  commentsCount: getRandomNumber(0, 8),
+  releaseDate: `30 march ${1950 + getRandomNumber(0, 70)}`,
+  genres: [
     `Musical`,
     `Drama`,
     `Action`,
     `Cartoon`,
     `Adventure`,
-    `Historical`
-  ][getRandomNumber(7)],
-  duration: `1h32m`,
-  details: {
-    comments: [
-      {
-        emoji: `./images/emoji/smile.png`,
-        text: `Interesting setting and a good cast`,
-        author: `Tim Macoveev`,
-        commentDay: `3 days ago`,
-      },
-      {
-        emoji: `./images/emoji/sleeping.png`,
-        text: `Booooooooooring`,
-        author: `John Doe`,
-        commentDay: `3 days ago`,
-      },
-      {
-        emoji: `./images/emoji/puke.png`,
-        text: `Very very old. Meh`,
-        author: `John Doe`,
-        commentDay: `2 days ago`,
-      },
-      {
-        emoji: `./images/emoji/angry.png`,
-        text: `Almost two hours? Seriously?`,
-        author: `John Doe`,
-        commentDay: `Today`,
-      },
-    ],
-    name: `The Great Flamarion`,
-    nameOriginal: `The Great Flamarion`,
-    director: `Anthony Mann`,
-    poster: `./images/posters/the-great-flamarion.jpg`,
-    writers: [
-      `Anne Wigton`,
-      `Heinz Herald`,
-      `Richard Weil`,
-    ],
-    actors: [
-      `Erich von Stoheim`,
-      `Mary Beth Hughes`,
-      `Dan Duryea`
-    ],
-    releaseDate: `30 March 1945`,
-    duration: `1h 18m`,
-    country: `USA`,
-    genres: [
-      `Drama`,
-      `Film-Noir`,
-      `Mystery`,
-    ],
-    description: `The film opens following a murder at a cabaret in Mexico City in 1936, and then presents the events
-    leading up to it in flashback. The Great Flamarion (Erich von Stroheim) is an arrogant, friendless, and misogynous
-    marksman who displays his trick gunshot act in the vaudeville circuit. His show features a beautiful assistant, Connie
-    (Mary Beth Hughes) and her drunken husband Al (Dan Duryea), Flamarion's other assistant. Flamarion falls in love with
-    Connie, the movie's femme fatale, and is soon manipulated by her into killing her no good husband during one of their acts.`,
-    age: `18+`,
-    rating: `8.9`,
-  },
+    `Historical`],
+  duration: `${getRandomNumber(0, 4)}h ${getRandomNumber(0, 60)}m`,
+  country: MOCK_COUNTRIES[getRandomNumber(0, MOCK_COUNTRIES.length + 1)],
+  director: getRandomName(),
+  actors: new Array(getRandomNumber(1, 7)).fill(``).map(getRandomName),
+  writers: new Array(getRandomNumber(1, 5)).fill(``).map(getRandomName),
+  age: `${getRandomNumber(0, 22)}+`,
+  comments: new Array(getRandomNumber(1, 5)).fill(``).map(getComment),
   isAddedToWatchList: false,
   isMarkedAsWatched: false,
   isFavorite: false,
 });
-
-// export const getFilmsArray = (number) => new Array(number).fill(``).map(() => getFilm());
-
 export const filters = [
   {
     title: `All movies`,
@@ -143,31 +146,4 @@ export const filters = [
     count: 0,
     isChecked: false,
   }
-];
-
-export const comments = [
-  {
-    emoji: `./images/emoji/smile.png`,
-    text: `Interesting setting and a good cast`,
-    author: `Tim Macoveev`,
-    commentDay: `3 days ago`,
-  },
-  {
-    emoji: `./images/emoji/sleeping.png`,
-    text: `Booooooooooring`,
-    author: `John Doe`,
-    commentDay: `3 days ago`,
-  },
-  {
-    emoji: `./images/emoji/puke.png`,
-    text: `Very very old. Meh`,
-    author: `John Doe`,
-    commentDay: `2 days ago`,
-  },
-  {
-    emoji: `./images/emoji/angry.png`,
-    text: `Almost two hours? Seriously?`,
-    author: `John Doe`,
-    commentDay: `Today`,
-  },
 ];

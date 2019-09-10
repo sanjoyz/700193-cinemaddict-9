@@ -2,24 +2,24 @@ import AbstractComponent from '../components/abstract-component.js';
 export default class FilmDetails extends AbstractComponent {
   constructor(film) {
     super();
-    this._poster = film.details.poster;
-    this._age = film.details.age;
-    this._name = film.details.name;
-    this._nameOriginal = film.details.nameOriginal;
-    this._rating = film.details.rating;
-    this._director = film.details.director;
-    this._writers = film.details.writers;
-    this._actors = film.details.actors;
-    this._releaseDate = film.details.releaseDate;
-    this._country = film.details.country;
-    this._genres = film.details.genres;
-    this._description = film.details.description;
-    this._comments = film.details.comments;
-    this._isAddedToWatchList = false;
-    this._isMarkedAsWatched = false;
-    this._isFavorite = false;
+    this._poster = film.poster;
+    this._age = film.age;
+    this._name = film.name;
+    this._nameOriginal = film.nameOriginal;
+    this._rating = film.rating;
+    this._director = film.director;
+    this._writers = film.writers;
+    this._actors = film.actors;
+    this._releaseDate = film.releaseDate;
+    this._duration = film.duration;
+    this._country = film.country;
+    this._genres = film.genres;
+    this._description = film.description;
+    this._comments = film.comments;
+    this._isAddedToWatchList = film.isAddedToWatchList;
+    this._isMarkedAsWatched = film.isMarkedAsWatched;
+    this._isFavorite = film.isFavorite;
   }
-
   getTemplate() {
     return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">

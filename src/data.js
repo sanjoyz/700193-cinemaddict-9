@@ -1,4 +1,4 @@
-// import moment from 'moment'
+import moment from 'moment';
 import {getRandomNumber} from './utils.js';
 
 const MOCK_TITLES = [`Made for each other`,
@@ -100,8 +100,8 @@ export const getFilm = () => ({
   poster: MOCK_POSTERS[getRandomNumber(0, MOCK_POSTERS.length - 1)],
   description: getRandomDescription(DESCRIPTION_STRING),
   rating: getRandomNumber(0, 11),
-  commentsCount: getRandomNumber(0, 8),
-  releaseDate: `30 march ${1950 + getRandomNumber(0, 70)}`,
+  commentsCount: getRandomNumber(0, 8),  
+  releaseDate: moment(new Date(Date.now() - getRandomNumber(0, 10) * 365 * 7 * 24 * 60 * 60 * 1000)),
   genres: [
     `Musical`,
     `Drama`,

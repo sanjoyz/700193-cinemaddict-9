@@ -61,7 +61,7 @@ export default class FilmDetails extends AbstractComponent {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${this._releaseDate}</td>
+                <td class="film-details__cell">${this._releaseDate.format(`Do MMMM YYYY`)}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>

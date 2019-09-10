@@ -100,7 +100,7 @@ export const getFilm = () => ({
   poster: MOCK_POSTERS[getRandomNumber(0, MOCK_POSTERS.length - 1)],
   description: getRandomDescription(DESCRIPTION_STRING),
   rating: getRandomNumber(0, 11),
-  commentsCount: getRandomNumber(0, 8),  
+  commentsCount: getRandomNumber(0, 8),
   releaseDate: moment(new Date(Date.now() - getRandomNumber(0, 10) * 365 * 7 * 24 * 60 * 60 * 1000)),
   genres: [
     `Musical`,

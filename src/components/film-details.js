@@ -2,24 +2,10 @@ import AbstractComponent from '../components/abstract-component.js';
 export default class FilmDetails extends AbstractComponent {
   constructor(film) {
     super();
-    this._poster = film.details.poster;
-    this._age = film.details.age;
-    this._name = film.details.name;
-    this._nameOriginal = film.details.nameOriginal;
-    this._rating = film.details.rating;
-    this._director = film.details.director;
-    this._writers = film.details.writers;
-    this._actors = film.details.actors;
-    this._releaseDate = film.details.releaseDate;
-    this._country = film.details.country;
-    this._genres = film.details.genres;
-    this._description = film.details.description;
-    this._comments = film.details.comments;
-    this._isAddedToWatchList = false;
-    this._isMarkedAsWatched = false;
-    this._isFavorite = false;
+    Object.keys(film).forEach(function (key) {
+      this[`_${key}`] = film[key];
+    }.bind(this));
   }
-
   getTemplate() {
     return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
@@ -61,7 +47,7 @@ export default class FilmDetails extends AbstractComponent {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${this._releaseDate}</td>
+                <td class="film-details__cell">${this._releaseDate.format(`Do MMMM YYYY`)}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>

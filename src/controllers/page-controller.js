@@ -21,11 +21,6 @@ export default class PageController {
     this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
   }
   _onDataChange(newData, oldData) {
-    /*  _onDataChange(newData, oldData) {
-    this._allFilmsCard[this._allFilmsCard.findIndex((it) => it === oldData)] = newData;
-    this._constCardsConfig[this._allFilmsCard.findIndex((it) => it === oldData)] = newData;
-    this._renderFilmsContainer(this._allFilmsCard.slice(), this._countShownCard);
-  }*/
     const index = this._films.findIndex((film) => film === oldData);
     this._films[index] = newData;
     this._renderFilms(this._films);

@@ -4,6 +4,7 @@ import {Position} from '../utils';
 import {getFilm} from '../data';
 import {render} from '../utils';
 import {deleteElement} from '../utils';
+import moment from 'moment';
 const TOP_RATED_FILMS = 2;
 const MOST_COMMENTED_FILMS = 2;
 const FILMS_WE_HAVE = 15;
@@ -17,12 +18,15 @@ export default class MovieController {
     this._film = new Film(data);
     this._filmDetails = new FilmDetails(data);
     this._mainElement = document.querySelector(`.main`);
+    this._bodyElement = document.querySelector(`body`);
     this.init();
     this.addToWatchListHandler();
     this.markAsWatchedHandler();
     this.addToFavoriteHanlder();
     this.popupAddToWatchListHandler();
-    this.commentDeleteHanlder();
+    this._commentDeleteHanlder();
+    this._addEmoji();
+    this._addComment();
   }
   _renderFilm(filmMock, renderContainer) {
     if (document.querySelectorAll(`.film-card`).length > FILMS_WE_HAVE) {
@@ -31,7 +35,6 @@ export default class MovieController {
     }
     render(renderContainer, filmMock);
   }
-
   _getEntryObject() {
     const entry = {
       name: this._film._name,
@@ -92,7 +95,59 @@ export default class MovieController {
       this._filmDetails.removeElement();
     }
   }
-  commentDeleteHanlder() {
+  _addEmoji() {
+    const allEmojis = this._filmDetails.getElement().querySelectorAll(`.film-details__emoji-list`);
+    allEmojis.forEach((emoji) => {
+      emoji.addEventListener(`click`, (evt) => {
+        const emojiContainer = this._filmDetails.getElement().querySelector(`.film-details__add-emoji-label`);
+        if (evt.target.tagName === `INPUT`) {
+          const imgElement = `<img id="${evt.target.value}" src="./images/emoji/${evt.target.value}.png" width="55" height="55" alt="emoji">`;
+          emojiContainer.innerHTML = ``;
+          emojiContainer.insertAdjacentHTML(`beforeend`, imgElement);
+        }
+      });
+    });
+  }
+  _addComment() {
+    const textAreaComment = this._filmDetails.getElement().querySelector(`.film-details__comment-input`);
+    const commentsList = this._filmDetails.getElement().querySelector(`.film-details__comments-list`);
+    const onEnterKeyDown = (e) => {
+      if ((e.ctrlKey) && ((e.keyCode === 13))) {
+        const imgAdress = this._filmDetails.getElement().querySelector(`.film-details__add-emoji-label`).firstChild.id;
+        const comment = `<li class="film-details__comment">
+                        <span class="film-details__comment-emoji">
+                          <img src="./images/emoji/${imgAdress}.png" width="55" height="55" alt="emoji">
+                        </span>
+                        <div>
+                          <p class="film-details__comment-text">${textAreaComment.value}</p>
+                          <p class="film-details__comment-info">
+                            <span class="film-details__comment-author">Random Author</span>
+                            <span class="film-details__comment-day">${moment(new Date(Date.now())).format(`YY/MM/DD hh:mm`)}</span>
+                            <button class="film-details__comment-delete">Delete</button>
+                          </p>
+                        </div>
+                      </li>`;
+
+        const entry = this._data;
+
+        commentsList.insertAdjacentHTML(`beforeend`, comment);
+        this._filmDetails.getElement().querySelector(`.film-details__comments-count`).innerHTML = this._filmDetails.getElement().querySelectorAll(`.film-details__comment`).length;
+
+        entry.comments.push({
+          text: textAreaComment.value,
+          emoji: imgAdress + `.png`,
+          author: `Random name from server`,
+          commentDay: new Date()
+        });
+
+        this._onDataChange(entry, this._data);
+        this._commentDeleteHanlder();
+      }
+    };
+
+    textAreaComment.addEventListener(`keydown`, onEnterKeyDown);
+  }
+  _commentDeleteHanlder() {
     const commentDeleteButtons = this._filmDetails.getElement().querySelectorAll(`.film-details__comment-delete`);
     commentDeleteButtons.forEach((button, count) => {
       button.addEventListener(`click`, (evt) => {
@@ -124,15 +179,15 @@ export default class MovieController {
     };
     // Попап по клику: постер, название, комменты
     this._film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
-      render(this._mainElement, this._filmDetails.getElement(), `beforeend`);
+      render(this._bodyElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
     });
     this._film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
-      render(this._mainElement, this._filmDetails.getElement(), `beforeend`);
+      render(this._bodyElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
     });
     this._film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
-      render(this._mainElement, this._filmDetails.getElement(), `beforeend`);
+      render(this._bodyElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
     });
     // Если фокус в поле ввода комментария удаляем обработчик esc

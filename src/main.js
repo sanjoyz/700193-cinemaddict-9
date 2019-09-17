@@ -16,3 +16,12 @@ render(headerElement, profileElement, `beforeend`);
 const filmMocks = new Array(FILMS_TO_SHOW).fill(``).map(getFilm);
 const pageController = new PageController(mainElement, filmMocks);
 pageController.init();
+
+
+/*
+Известные сейчас проблемы:
+1. Жанры у карточек рандомятся при клике на контролы
+2. Не сохраняется состояние контролов фильма при вызове деталей
+3. Обработать статистику согласно ТЗ
+4. Поле ввода комментария не переносится вниз после добавления нового комментария
+*/

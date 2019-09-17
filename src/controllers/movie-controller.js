@@ -1,5 +1,6 @@
 import Film from '../components/film-card.js';
 import FilmDetails from '../components/film-details';
+import UserFilmRating from '../components/user-film-rating.js';
 import {Position} from '../utils';
 import {getFilm} from '../data';
 import {render} from '../utils';
@@ -25,6 +26,7 @@ export default class MovieController {
     this.addToFavoriteHanlder();
     this.popupAddToWatchListHandler();
     this._commentDeleteHanlder();
+    this._rateFilm(this._data);
     this._addEmoji();
     this._addComment();
   }
@@ -94,6 +96,18 @@ export default class MovieController {
       deleteElement(this._filmDetails.getElement());
       this._filmDetails.removeElement();
     }
+  }
+  _rateFilm(film) {
+    const filmWatchedButton = this._filmDetails.getElement().querySelector(`#watched`);
+    const userRating = new UserFilmRating(film);
+    filmWatchedButton.addEventListener(`click`, () => {
+      if (filmWatchedButton.checked === true) {
+        const sectionTop = this._filmDetails.getElement().querySelector(`.form-details__bottom-container`);
+        render(sectionTop, userRating.getElement(), Position.BEFORE);
+      } else {
+        document.querySelector(`.form-details__middle-container`).remove();
+      }
+    });
   }
   _addEmoji() {
     const allEmojis = this._filmDetails.getElement().querySelectorAll(`.film-details__emoji-list`);

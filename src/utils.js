@@ -4,7 +4,8 @@ export const getRandomNumber = (min, max) => {
 
 export const Position = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
+  BEFORE: `before`
 };
 
 export const createElement = (template) => {
@@ -21,6 +22,8 @@ export const render = (container, element, position) => {
     case Position.BEFOREEND:
       container.append(element);
       break;
+    case Position.BEFORE:
+      container.parentNode.insertBefore(element, container);
   }
 };
 

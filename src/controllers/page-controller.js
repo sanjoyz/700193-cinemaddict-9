@@ -6,6 +6,7 @@ import Sort from '../components/sort.js';
 import Navigation from '../components/navigation.js';
 import MovieController from '../controllers/movie-controller.js';
 import Statistic from '../components/statistic.js';
+import FilmListController from '../controllers/film-list-controller.js';
 export default class PageController {
   constructor(container, films) {
     this._container = container;
@@ -16,10 +17,25 @@ export default class PageController {
     this._sort = new Sort();
     this._statistic = new Statistic();
     this._navigation = new Navigation();
+    this._filmListConroller = new FilmListController(this._filmsList.getElement(), this._onDataChange.bind(this));
     this._onChangeView = this._onChangeView.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
     this._filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
+
+
+    this._allFilmsCard = [];
+    this._constCardsConfig = [];
+    this._currentlyCardsConfig = [];
   }
+
+  _renderFilmsContainer(films, count = 5) {
+    const btnShowMore = document.querySelector(`.films-list__show-more`);
+
+    if (btnShowMore !== null) {
+      btnShowMore.remove();
+    }
+  }
+
   _onDataChange(newData, oldData) {
     const index = this._films.findIndex((film) => film === oldData);
     this._films[index] = newData;
@@ -41,6 +57,17 @@ export default class PageController {
     const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
   }
+  /*
+  удалить?
+  */
+  show(films) {
+    this._allFilmsCard = films;
+    this._constCardsConfig = films;
+    this._currentlyCardsConfig = films;
+    this._renderFilmsContainer(films);
+  }
+
+
   // выводим количество фильмов в подвал
   _renderFooterFilmsNumber() {
     const footerStatisticElement = document.querySelector(`.footer__statistics`).firstElementChild;
@@ -106,3 +133,4 @@ export default class PageController {
     this._renderFooterFilmsNumber();
   }
 }
+

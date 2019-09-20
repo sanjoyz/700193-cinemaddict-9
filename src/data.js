@@ -106,7 +106,7 @@ const getComment = () => ({
   commentDay: `${getRandomNumber(0, 10)} days ago`,
 });
 
-export const getFilm = () => ({
+const getFilm = () => ({
   name: MOCK_TITLES[getRandomNumber(0, MOCK_TITLES.length - 1)],
   nameOriginal: MOCK_ORIGINAL_NAMES[getRandomNumber(0, MOCK_ORIGINAL_NAMES.length)],
   poster: MOCK_POSTERS[getRandomNumber(0, MOCK_POSTERS.length - 1)],

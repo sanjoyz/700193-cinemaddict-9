@@ -31,7 +31,7 @@ export const deleteElement = (element) => {
   }
 };
 
-export const defineRank = () => {
+export const getProfileRank = () => {
   const count = getAllFiltersConfig(getFilmsMocks)[2].count;
   let rank;
 
@@ -56,7 +56,7 @@ const getAllFiltersConfig = (config) => {
     `watched`,
     `favorite`
   ]);
-  const countAllFilters = getCountFilmsOptions(config);
+  const countAllFilters = countFilmsOptions(config);
 
   for (let name of nameFilters) {
     arrayFilters.push({name, count: countAllFilters[name]});
@@ -64,7 +64,7 @@ const getAllFiltersConfig = (config) => {
 
   return arrayFilters;
 };
-const getCountFilmsOptions = (config) => {
+const countFilmsOptions = (config) => {
   const countAllFilters = new Set();
   let countWathlist = 0;
   let countWatced = 0;
@@ -92,10 +92,10 @@ const getCountFilmsOptions = (config) => {
   return countAllFilters;
 };
 
-const defineMostValues = (config, type) => {
+const getMostValues = (config, type) => {
   const supportArray = [];
-  const arrayValues = [];
-  const arrayMostValue = [];
+  const values = [];
+  const mostValues = [];
 
   if (type === `rating`) {
     config.map((item, i) => supportArray.push({i, [type]: item[type].toString()}));
@@ -103,28 +103,27 @@ const defineMostValues = (config, type) => {
     config.map((item, i) => supportArray.push({i, [type]: item[type].length.toString()}));
   }
 
-  supportArray.map((item) => arrayValues.push(item[type]));
+  supportArray.map((item) => values.push(item[type]));
 
-  let twoMostValueElements = arrayValues.sort().splice(-2, 2).sort();
+  let twoMostValueElements = values.sort().splice(-2, 2).sort();
   const [one, two] = twoMostValueElements;
 
   supportArray.map((item, i) => {
     if (two.indexOf(item[type]) !== -1) {
-      arrayMostValue.push(i);
+      mostValues.push(i);
     }
   });
 
   supportArray.map((item, i) => {
     if (one.indexOf(item[type]) !== -1) {
-      arrayMostValue.push(i);
+      mostValues.push(i);
     }
   });
 
-  return arrayMostValue;
+  return mostValues;
 };
-
-export const defineMostValuesInFilms = (value, config = getFilmsMocks) => {
-  const arrayMost = defineMostValues(config, value);
+export const getMostValuesInFilms = (value, config = getFilmsMocks) => {
+  const arrayMost = getMostValues(config, value);
 
   return config.slice(arrayMost[0], arrayMost[0] + 1).concat(config.slice(arrayMost[1], arrayMost[1] + 1));
 };

@@ -1,5 +1,5 @@
 
-import {createElement, defineRank} from './utils.js';
+import {createElement, getProfileRank} from './utils.js';
 import {render} from './utils.js';
 import PageController from './controllers/page-controller.js';
 import Profile from './components/profile.js';
@@ -8,7 +8,7 @@ import Search from './components/search.js';
 import {getFilmsMocks} from './data.js';
 
 const search = new Search();
-const profile = new Profile(defineRank());
+const profile = new Profile(getProfileRank());
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const searchElement = createElement(search.getTemplate());

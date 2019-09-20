@@ -1,4 +1,4 @@
-import {Position, render, defineMostValuesInFilms} from '../utils.js';
+import {Position, render, getMostValuesInFilms} from '../utils.js';
 import {filters} from '../data.js';
 import FilmList from '../components/film-list.js';
 import ShowMoreButton from '../components/show-more-button.js';
@@ -51,12 +51,12 @@ export default class PageController {
   }
 
   _renderFilmsContainer(films, count = 5) {
-
+    this._filmsList.getElement().querySelector(`.films-list__container`).innerHTML = ``;
     this._topRated.getElement().querySelector(`.films-list__container`).innerHTML = ``;
     this._mostCommented.getElement().querySelector(`.films-list__container`).innerHTML = ``;
 
-    this._filmListTopRatedController.setFilms(defineMostValuesInFilms(`rating`, this._constCardsConfig));
-    this._filmListMostCommentedController.setFilms(defineMostValuesInFilms(`comments`, this._constCardsConfig));
+    this._filmListTopRatedController.setFilms(getMostValuesInFilms(`rating`, this._constCardsConfig));
+    this._filmListMostCommentedController.setFilms(getMostValuesInFilms(`comments`, this._constCardsConfig));
     this._filmListConroller.setFilms(films.slice(0, count));
 
     if (films.length > count) {
@@ -79,7 +79,7 @@ export default class PageController {
   _onDataChange(newData, oldData) {
     const index = this._films.findIndex((film) => film === oldData);
     this._films[index] = newData;
-    this._renderFilms(this._films);
+    this._renderFilmsContainer(this._films, this._shownFilms);
   }
   /* _onChangeView() {
     this._subscriptions.forEach((it) => it());

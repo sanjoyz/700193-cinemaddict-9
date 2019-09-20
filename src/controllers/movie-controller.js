@@ -50,7 +50,10 @@ export default class MovieController {
       writers: this._filmDetails._writers,
       age: this._filmDetails._age,
       country: this._filmDetails._country,
-      genre: this._filmDetails._genre
+      genre: this._filmDetails._genre,
+      isMarkedAsWatched: this._film._isMarkedAsWatched,
+      isAddedToWatchList: this._film._isAddedToWatchList,
+      isFavorite: this._film._isFavorite,
     };
     return entry;
   }
@@ -187,18 +190,25 @@ export default class MovieController {
         document.removeEventListener(`keydown`, onEscKeyDown);
       }
     };
+    const onCloseButtonClick = () => {
+      this._filmDetails.removeElement();
+      this._filmDetails.getElement().querySelector(`.film-details__close-btn`).removeEventListener(`click`, onCloseButtonClick);
+    };
     // Попап по клику: постер, название, комменты
     this._film.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
       render(this._bodyElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
+      this._filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
     });
     this._film.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
       render(this._bodyElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
+      this._filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
     });
     this._film.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
       render(this._bodyElement, this._filmDetails.getElement(), `beforeend`);
       document.addEventListener(`keydown`, onEscKeyDown);
+      this._filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
     });
     // Если фокус в поле ввода комментария удаляем обработчик esc
     this._filmDetails.getElement().querySelector(`textarea`).addEventListener(`focus`, () => {
@@ -209,10 +219,7 @@ export default class MovieController {
       document.addEventListener(`keydown`, onEscKeyDown);
     });
     //
-    const onCloseButtonClick = () => {
-      this._filmDetails.removeElement();
-    };
-    this._filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
+
 
     render(this._container, this._film.getElement(), Position.BEFOREEND);
   }

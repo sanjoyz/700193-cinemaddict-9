@@ -1,35 +1,27 @@
-import {getProfileTemplate} from './components/profile.js';
-import {createElement} from './utils.js';
+
+import {createElement, defineRank} from './utils.js';
 import {render} from './utils.js';
 import PageController from './controllers/page-controller.js';
+import Profile from './components/profile.js';
 import SearchController from './controllers/search-controller.js';
 import Search from './components/search.js';
-import {getFilm} from './data.js';
-const FILMS_TO_SHOW = 5;
+import {getFilmsMocks} from './data.js';
+
 const search = new Search();
+const profile = new Profile(defineRank());
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
 const searchElement = createElement(search.getTemplate());
+const profileElement = createElement(profile.getTemplate());
 render(headerElement, searchElement, `beforeend`);
-const profileElement = createElement(getProfileTemplate());
 render(headerElement, profileElement, `beforeend`);
 
-const filmMocks = new Array(FILMS_TO_SHOW).fill(``).map(getFilm);
+const filmMocks = getFilmsMocks;
+
 const pageController = new PageController(mainElement, filmMocks);
-pageController.init();
+pageController.show(filmMocks);
 
-
-/*
-Известные сейчас проблемы:
-1. Жанры у карточек рандомятся при клике на контролы
-2. Не сохраняется состояние контролов фильма при вызове деталей
-3. Обработать статистику согласно ТЗ
-4. Поле ввода комментария не переносится вниз после добавления нового комментария
-5. Реализовать поиск
-  5.1 Не удаляется результат
-*/
-
-const searchController = new SearchController(mainElement);
+const searchController = new SearchController(mainElement, search);
 searchController.show(filmMocks);
 
 const inputSearch = document.querySelector(`.search__field`);
@@ -42,7 +34,16 @@ inputSearch.addEventListener(`keyup`, () => {
 });
 
 search.getElement().querySelector(`.search__reset`).addEventListener(`click`, () => {
-  searchController.hideResults();
+  searchController.hideResult();
   pageController.show(filmMocks);
 });
 
+/*
+Известные сейчас проблемы:
+
+2. Не сохраняется состояние контролов фильма при вызове деталей
+3. Обработать статистику согласно ТЗ
+
+5. Реализовать поиск
+  5.1 Не удаляется результат
+*/

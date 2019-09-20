@@ -2,12 +2,10 @@ import Film from '../components/film-card.js';
 import FilmDetails from '../components/film-details';
 import UserFilmRating from '../components/user-film-rating.js';
 import {Position} from '../utils';
-import {getFilm} from '../data';
 import {render} from '../utils';
 import {deleteElement} from '../utils';
 import moment from 'moment';
-const TOP_RATED_FILMS = 2;
-const MOST_COMMENTED_FILMS = 2;
+
 const FILMS_WE_HAVE = 15;
 
 export default class MovieController {
@@ -52,7 +50,7 @@ export default class MovieController {
       writers: this._filmDetails._writers,
       age: this._filmDetails._age,
       country: this._filmDetails._country,
-      genres: this._filmDetails._genres
+      genre: this._filmDetails._genre
     };
     return entry;
   }
@@ -175,15 +173,13 @@ export default class MovieController {
     });
   }
 
-
   init() {
-    // попап
-    const filmsExtraElementTopRated = document.querySelector(`.films-list--extra.top-rated .films-list__container`);
-    const filmsExtraElementMostCommented = document.querySelector(`.films-list--extra.most-commented .films-list__container`);
-    const topRatedMocks = new Array(TOP_RATED_FILMS).fill(``).map(getFilm);
-    const mostViewedMocks = new Array(MOST_COMMENTED_FILMS).fill(``).map(getFilm);
-    topRatedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementTopRated));
-    mostViewedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementMostCommented));
+    // const filmsExtraElementTopRated = document.querySelector(`.films-list--extra.top-rated .films-list__container`);
+    // const filmsExtraElementMostCommented = document.querySelector(`.films-list--extra.most-commented .films-list__container`);
+    // const topRatedMocks = new Array(TOP_RATED_FILMS).fill(``).map(getFilm);
+    // const mostViewedMocks = new Array(MOST_COMMENTED_FILMS).fill(``).map(getFilm);
+    // topRatedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementTopRated));
+    // mostViewedMocks.forEach((mock) => this._renderFilm(mock, filmsExtraElementMostCommented));
 
     const onEscKeyDown = (evt) => {
       if (evt.key === `Escape` || evt.key === `Esc`) {
@@ -214,8 +210,7 @@ export default class MovieController {
     });
     //
     const onCloseButtonClick = () => {
-      deleteElement(document.querySelector(`.film-details`));
-      this._onChangeView();
+      this._filmDetails.removeElement();
     };
     this._filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, onCloseButtonClick);
 

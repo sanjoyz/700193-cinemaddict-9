@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import {createElement, deleteElement} from '../utils.js';
 export default class AbstractComponent {
   constructor() {
     if (new.target === AbstractComponent) {
@@ -13,6 +13,7 @@ export default class AbstractComponent {
     return this._element;
   }
   removeElement() {
+    deleteElement(this._element);
     this._element = null;
   }
   getTemplate() {

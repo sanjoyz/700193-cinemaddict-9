@@ -1,13 +1,12 @@
-import {getRandomNumber} from '../utils.js';
 import AbstractComponent from '../components/abstract-component.js';
 export default class Film extends AbstractComponent {
-  constructor({name, rating, releaseDate, duration, genres, poster, description, comments, isAddedToWatchList, isMarkedAsWatched, isFavorite}) {
+  constructor({name, rating, releaseDate, duration, genre, poster, description, comments, isAddedToWatchList, isMarkedAsWatched, isFavorite}) {
     super();
     this._name = name;
     this._rating = rating;
     this._releaseDate = releaseDate;
     this._duration = duration;
-    this._genre = genres[getRandomNumber(0, genres.length - 1)];
+    this._genre = genre;
     this._poster = poster;
     this._description = description;
     this._comments = comments;

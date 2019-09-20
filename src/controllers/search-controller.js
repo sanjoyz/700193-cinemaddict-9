@@ -1,42 +1,42 @@
 import SearchNoResult from '../components/search-no-result.js';
 import SearchResult from '../components/search-result.js';
-import {render, deleteElement, Position} from '../utils.js';
+import {render, Position} from '../utils.js';
 import FilmListController from './film-list-controller.js';
+
 export default class SearchController {
-  constructor(container) {
+  constructor(container, search) {
     this._container = container;
+    this._search = search;
+
     this._filmsList = document.querySelector(`.films-list`);
 
-    this._searchResult = new SearchResult({});
     this._searchNoResult = new SearchNoResult();
+    this._searchResult = new SearchResult({});
     this._filmListController = new FilmListController(this._filmsList, this._onDataChange.bind(this));
 
     this._onDataChange = this._onDataChange.bind(this);
   }
 
-  show(cards) {
-    const searchInput = document.querySelector(`.search__field`);
-
+  show(films) {
+    const searchInput = this._search.getElement().querySelector(`input`);
     searchInput.addEventListener(`keyup`, (evt) => {
       if (searchInput.value.length >= 3) {
         const value = evt.target.value;
-
-        this.showResults(cards, value);
+        this.showResults(films, value);
       }
     });
   }
-
-  showResults(cards, value) {
+  showResults(films, value) {
     const navigation = document.querySelector(`.main-navigation`);
     const sort = document.querySelector(`.sort`);
     const extraFilms = document.querySelectorAll(`.films-list--extra`);
     const filmsListContainer = document.querySelector(`.films-list__container`);
     const filmsList = document.querySelector(`.films-list`);
-    const showMoreBtn = document.querySelector(`.films-list__show-more`);
-    const searchFilms = cards.filter((card) => card.name.toLowerCase().includes(value.toLowerCase()));
+    const showMoreButton = document.querySelector(`.films-list__show-more`);
+    const searchFilms = films.filter((film) => film.name.toLowerCase().includes(value.toLowerCase()));
 
-    if (showMoreBtn !== null) {
-      showMoreBtn.remove();
+    if (showMoreButton !== null) {
+      showMoreButton.remove();
     }
 
     navigation.classList.add(`visually-hidden`);
@@ -52,13 +52,13 @@ export default class SearchController {
       filmsListContainer.classList.add(`visually-hidden`);
       render(filmsList, this._searchNoResult.getElement(), Position.AFTERBEGIN);
     }
-    deleteElement(this._searchResult.getElement());
+
     this._searchResult.removeElement();
     this._searchResult = new SearchResult(searchFilms.length);
     render(this._container, this._searchResult.getElement(), Position.AFTERBEGIN);
   }
 
-  hideResults() {
+  hideResult() {
     const navigation = document.querySelector(`.main-navigation`);
     const sort = document.querySelector(`.sort`);
     const extraFilms = document.querySelectorAll(`.films-list--extra`);

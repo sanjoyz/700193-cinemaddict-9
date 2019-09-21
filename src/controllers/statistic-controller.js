@@ -10,7 +10,6 @@ export default class StatisticController {
     this._container = container;
     this._films = films;
     this._rank = rank;
-    debugger;
     this._statistic = new Statistic(this._rank);
   }
   init() {

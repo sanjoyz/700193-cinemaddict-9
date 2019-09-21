@@ -34,7 +34,6 @@ export const deleteElement = (element) => {
 export const getProfileRank = () => {
   const count = getAllFiltersConfig(getFilmsMocks)[2].count;
   let rank;
-
   if (count === 0) {
     rank = ``;
   } else if (count > 0 && count <= 10) {

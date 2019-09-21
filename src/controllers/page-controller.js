@@ -1,4 +1,4 @@
-import {Position, render, getMostValuesInFilms} from '../utils.js';
+import {Position, render, getMostValuesInFilms, getProfileRank} from '../utils.js';
 import {filters} from '../data.js';
 import FilmList from '../components/film-list.js';
 import ShowMoreButton from '../components/show-more-button.js';
@@ -9,6 +9,7 @@ import Statistic from '../components/statistic.js';
 import FilmListController from '../controllers/film-list-controller.js';
 import TopRated from '../components/top-rated.js';
 import MostCommented from '../components/most-commented.js';
+import StatisticController from './statistic-controller.js';
 
 const FILMS_IN_ROW = 5;
 
@@ -110,12 +111,25 @@ export default class PageController {
     const footerStatisticElement = document.querySelector(`.footer__statistics`).firstElementChild;
     footerStatisticElement.textContent = `${this._films.length} movies inside`;
   }
+
   // скрываем статистику
   _statisticHide() {
     this._statistic.getElement().classList.add(`visually-hidden`);
   }
   // показываем статистику
   _statisticShow() {
+
+    const getFilmsWatched = () => {
+      const filmsWatched = [];
+      for (const value of this._films) {
+        if (value._isWatched) {
+          filmsWatched.push(value);
+        }
+      }
+      return filmsWatched;
+    };
+    const statistic = new StatisticController(this._container, getFilmsWatched(), getProfileRank());
+    statistic.init();
     this._statistic.getElement().classList.remove(`visually-hidden`);
   }
   // переключение между статистикой и фильмами

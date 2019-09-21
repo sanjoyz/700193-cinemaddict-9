@@ -81,12 +81,14 @@ const MOCK_COMMENTS_TEXT = [
   `Almost two hours? Seriously?`,
 ];
 const MOCK_GENRES = [
-  `Musical`,
-  `Drama`,
-  `Action`,
-  `Cartoon`,
+  `Animation`,
   `Adventure`,
-  `Historical`
+  `Family`,
+  `Thriller`,
+  `Sci-Fi`,
+  `Action`,
+  `Comedy`,
+  `Horror`,
 ];
 const getRandomDescription = (string) => {
   const arr = string.replace(/([.?!])\s*(?=[A-Z])/g, `$1|`).split(`|`);

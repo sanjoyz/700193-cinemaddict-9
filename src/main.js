@@ -1,5 +1,5 @@
 
-import {createElement, getProfileRank} from './utils.js';
+import {getProfileRank} from './utils.js';
 import {render} from './utils.js';
 import PageController from './controllers/page-controller.js';
 import Profile from './components/profile.js';
@@ -11,8 +11,8 @@ const search = new Search();
 const profile = new Profile(getProfileRank());
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
-const searchElement = createElement(search.getTemplate());
-const profileElement = createElement(profile.getTemplate());
+const searchElement = search.getElement();
+const profileElement = profile.getElement();
 render(headerElement, searchElement, `beforeend`);
 render(headerElement, profileElement, `beforeend`);
 
@@ -34,7 +34,7 @@ inputSearch.addEventListener(`keyup`, () => {
 });
 
 search.getElement().querySelector(`.search__reset`).addEventListener(`click`, () => {
-  searchController.hideResult();
+  searchController.hideResults();
   pageController.show(filmMocks);
 });
 

@@ -58,7 +58,7 @@ export default class SearchController {
     render(this._container, this._searchResult.getElement(), Position.AFTERBEGIN);
   }
 
-  hideResult() {
+  hideResults() {
     const navigation = document.querySelector(`.main-navigation`);
     const sort = document.querySelector(`.sort`);
     const extraFilms = document.querySelectorAll(`.films-list--extra`);

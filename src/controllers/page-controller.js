@@ -1,4 +1,4 @@
-import {Position, render, getMostValuesInFilms, getProfileRank} from '../utils.js';
+import {Position, render, getMostValuesInFilms, getProfileRank, getAllFiltersConfig} from '../utils.js';
 import {filters} from '../data.js';
 import FilmList from '../components/film-list.js';
 import ShowMoreButton from '../components/show-more-button.js';
@@ -24,7 +24,7 @@ export default class PageController {
     this._showMoreButton = new ShowMoreButton();
     this._sort = new Sort();
     // this._statistic = new Statistic();
-    this._navigation = new Navigation();
+    this._navigation = new Navigation(getAllFiltersConfig(this._films)[1].count, getAllFiltersConfig(this._films)[2].count, getAllFiltersConfig(this._films)[3].count);
     this._topRated = new TopRated();
     this._mostCommented = new MostCommented();
 
@@ -120,16 +120,20 @@ export default class PageController {
     const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
   }
+  _renderAllFilms() {
+    this._currentlyCardsConfig = this._constCardsConfig.slice();
+    this._allFilmsCard = this._constCardsConfig.slice();
+    this._countShownCard = this._CARDS_IN_ROW;
+    this._renderFilmsContainer(this._constCardsConfig.slice(), this._countShownCard);
+  }
   _renderSelectedFilms(filter) {
     const selectedFilms = [];
     this._constCardsConfig.slice().forEach((card) => {
       if (filter === `Watchlist` && card.isAddedToWatchList) {
         selectedFilms.push(card);
-      }
-      if (filter === `Favorites` && card.isFavorite) {
+      } else if (filter === `Favorites` && card.isFavorite) {
         selectedFilms.push(card);
-      }
-      if (filter === `History` && card.isMarkedAsWatched) {
+      } else if (filter === `History` && card.isMarkedAsWatched) {
         selectedFilms.push(card);
       }
     });
@@ -160,25 +164,35 @@ export default class PageController {
   }
   // переключение между статистикой и фильмами
   _onNavigationChange(evt) {
+    const activeItemChanger = () => {
+      this._navigation.getElement().querySelectorAll(`.main-navigation__item`).forEach((item) => item.classList.remove(`main-navigation__item--active`));
+      evt.target.classList.add(`main-navigation__item--active`);
+    };
     switch (evt.target.hash.slice(1)) {
       case `Stats`:
         this._statisticShow();
+        activeItemChanger();
         this._filmsList.getElement().classList.add(`visually-hidden`);
         break;
-      case `All movies`:
+      case `All`:
         this._statisticHide();
+        activeItemChanger();
         this._filmsList.getElement().classList.remove(`visually-hidden`);
+        this._renderAllFilms(evt.target.hash.slice(1));
         break;
       case `Watchlist`:
         this._statisticHide();
+        activeItemChanger();
         this._renderSelectedFilms(evt.target.hash.slice(1));
         break;
       case `History`:
         this._statisticHide();
+        activeItemChanger();
         this._renderSelectedFilms(evt.target.hash.slice(1));
         break;
       case `Favorites`:
         this._statisticHide();
+        activeItemChanger();
         this._renderSelectedFilms(evt.target.hash.slice(1));
         break;
     }

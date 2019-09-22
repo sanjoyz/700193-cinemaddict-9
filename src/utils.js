@@ -56,7 +56,6 @@ export const getAllFiltersConfig = (config) => {
     `Favorite`
   ]);
   const countAllFilters = countFilmsOptions(config);
-
   for (let name of nameFilters) {
     arrayFilters.push({name, count: countAllFilters[name]});
   }
@@ -73,20 +72,18 @@ const countFilmsOptions = (config) => {
     if (isAddedToWatchList) {
       countWathlist++;
     }
-
     if (isMarkedAsWatched) {
       countHistory++;
     }
-
     if (isFavorite) {
       countFavorite++;
     }
   });
 
-  countAllFilters.all = config.length;
-  countAllFilters.watchlist = countWathlist;
-  countAllFilters.watched = countHistory;
-  countAllFilters.favorite = countFavorite;
+  countAllFilters.All = config.length;
+  countAllFilters.Watchlist = countWathlist;
+  countAllFilters.History = countHistory;
+  countAllFilters.Favorite = countFavorite;
 
   return countAllFilters;
 };

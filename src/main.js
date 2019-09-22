@@ -1,27 +1,46 @@
-import {getSearchTemplate} from './components/search.js';
-import {getProfileTemplate} from './components/profile.js';
-import {createElement} from './utils.js';
+// import {getProfileRank} from './utils.js';
 import {render} from './utils.js';
 import PageController from './controllers/page-controller.js';
-import {getFilm} from './data.js';
-const FILMS_TO_SHOW = 5;
+// import Profile from './components/profile.js';
+import SearchController from './controllers/search-controller.js';
+import Search from './components/search.js';
+import {getFilmsMocks} from './data.js';
 
+const search = new Search();
+// const profile = new Profile(getProfileRank());
 const headerElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
-const searchElement = createElement(getSearchTemplate());
+const searchElement = search.getElement();
+// const profileElement = profile.getElement();
 render(headerElement, searchElement, `beforeend`);
-const profileElement = createElement(getProfileTemplate());
-render(headerElement, profileElement, `beforeend`);
+// render(headerElement, profileElement, `beforeend`);
 
-const filmMocks = new Array(FILMS_TO_SHOW).fill(``).map(getFilm);
+const filmMocks = getFilmsMocks;
+
 const pageController = new PageController(mainElement, filmMocks);
-pageController.init();
+pageController.show(filmMocks);
 
+const searchController = new SearchController(mainElement, search);
+searchController.show(filmMocks);
+
+const inputSearch = document.querySelector(`.search__field`);
+
+inputSearch.addEventListener(`keyup`, () => {
+  if (inputSearch.value.length === 0) {
+    searchController.hideResults();
+    pageController.show(filmMocks);
+  }
+});
+
+search.getElement().querySelector(`.search__reset`).addEventListener(`click`, () => {
+  searchController.hideResults();
+  pageController.show(filmMocks);
+});
 
 /*
 Известные сейчас проблемы:
-1. Жанры у карточек рандомятся при клике на контролы
+
 2. Не сохраняется состояние контролов фильма при вызове деталей
 3. Обработать статистику согласно ТЗ
-4. Поле ввода комментария не переносится вниз после добавления нового комментария
+
 */

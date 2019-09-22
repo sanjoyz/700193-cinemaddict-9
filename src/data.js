@@ -1,6 +1,10 @@
 import moment from 'moment';
-import {getRandomNumber} from './utils.js';
 
+const getRandomNumber = (min, max) => {
+  return Math.floor(min + Math.random() * (max + 1 - min));
+};
+
+const FILMS_WE_HAVE = 15;
 const MOCK_TITLES = [`Made for each other`,
   `Popeye the Sailor Meets Sindbad the Sailor`,
   `Santa Claus Conquers the Martians`,
@@ -76,6 +80,16 @@ const MOCK_COMMENTS_TEXT = [
   `Very very old. Meh`,
   `Almost two hours? Seriously?`,
 ];
+const MOCK_GENRES = [
+  `Animation`,
+  `Adventure`,
+  `Family`,
+  `Thriller`,
+  `Sci-Fi`,
+  `Action`,
+  `Comedy`,
+  `Horror`,
+];
 const getRandomDescription = (string) => {
   const arr = string.replace(/([.?!])\s*(?=[A-Z])/g, `$1|`).split(`|`);
   let result = ``;
@@ -94,7 +108,7 @@ const getComment = () => ({
   commentDay: `${getRandomNumber(0, 10)} days ago`,
 });
 
-export const getFilm = () => ({
+const getFilm = () => ({
   name: MOCK_TITLES[getRandomNumber(0, MOCK_TITLES.length - 1)],
   nameOriginal: MOCK_ORIGINAL_NAMES[getRandomNumber(0, MOCK_ORIGINAL_NAMES.length)],
   poster: MOCK_POSTERS[getRandomNumber(0, MOCK_POSTERS.length - 1)],
@@ -102,13 +116,8 @@ export const getFilm = () => ({
   rating: getRandomNumber(0, 11),
   // commentsCount: getRandomNumber(0, 8),
   releaseDate: moment(new Date(Date.now() - getRandomNumber(0, 10) * 365 * 7 * 24 * 60 * 60 * 1000)),
-  genres: [
-    `Musical`,
-    `Drama`,
-    `Action`,
-    `Cartoon`,
-    `Adventure`,
-    `Historical`],
+  watchDate: Date.now() - getRandomNumber(0, 2) * 12 * getRandomNumber(0, 7) * 24 * 60 * 60 * 1000,
+  genre: MOCK_GENRES[getRandomNumber(0, MOCK_GENRES.length - 1)],
   duration: `${getRandomNumber(0, 4)}h ${getRandomNumber(0, 60)}m`,
   country: MOCK_COUNTRIES[getRandomNumber(0, MOCK_COUNTRIES.length + 1)],
   director: getRandomName(),
@@ -116,10 +125,13 @@ export const getFilm = () => ({
   writers: new Array(getRandomNumber(1, 5)).fill(``).map(getRandomName),
   age: `${getRandomNumber(0, 22)}+`,
   comments: new Array(getRandomNumber(1, 5)).fill(``).map(getComment),
-  isAddedToWatchList: false,
-  isMarkedAsWatched: false,
-  isFavorite: false,
+  isAddedToWatchList: Boolean(getRandomNumber(0, 1)),
+  isMarkedAsWatched: Boolean(getRandomNumber(0, 1)),
+  isFavorite: Boolean(getRandomNumber(0, 1)),
 });
+
+export const getFilmsMocks = new Array(FILMS_WE_HAVE).fill(``).map(getFilm);
+
 export const filters = [
   {
     title: `All movies`,

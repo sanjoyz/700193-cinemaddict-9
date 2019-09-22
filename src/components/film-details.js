@@ -60,9 +60,8 @@ export default class FilmDetails extends AbstractComponent {
               <tr class="film-details__row">
                 <td class="film-details__term">Genres</td>
                 <td class="film-details__cell">
-                  <span class="film-details__genre">${this._genres[0]}</span>
-                  <span class="film-details__genre">${this._genres[1]}</span>
-                  <span class="film-details__genre">${this._genres[2]}</span></td>
+                  <span class="film-details__genre">${this._genre}</span>                  
+                </td>
               </tr>
             </tbody></table>
 
@@ -87,8 +86,8 @@ export default class FilmDetails extends AbstractComponent {
       <div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
           <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._comments.length}</span></h3>
-          ${this._comments.map((comment) => `
           <ul class="film-details__comments-list">
+          ${this._comments.map((comment) => `          
             <li class="film-details__comment">
               <span class="film-details__comment-emoji">
                 <img src="${comment.emoji}" width="55" height="55" alt="emoji">
@@ -102,7 +101,7 @@ export default class FilmDetails extends AbstractComponent {
                 </p>
               </div>
             </li>`).join(``)}
-          <ul>
+          </ul>
 
           <div class="film-details__new-comment">
             <div for="add-emoji" class="film-details__add-emoji-label"></div>

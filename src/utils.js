@@ -47,13 +47,13 @@ export const getProfileRank = () => {
   return rank;
 };
 
-const getAllFiltersConfig = (config) => {
+export const getAllFiltersConfig = (config) => {
   const arrayFilters = [];
   const nameFilters = new Set([
-    `all`,
-    `watchlist`,
-    `watched`,
-    `favorite`
+    `All`,
+    `Watchlist`,
+    `History`,
+    `Favorite`
   ]);
   const countAllFilters = countFilmsOptions(config);
 
@@ -66,7 +66,7 @@ const getAllFiltersConfig = (config) => {
 const countFilmsOptions = (config) => {
   const countAllFilters = new Set();
   let countWathlist = 0;
-  let countWatced = 0;
+  let countHistory = 0;
   let countFavorite = 0;
 
   config.forEach(({isAddedToWatchList, isMarkedAsWatched, isFavorite}) => {
@@ -75,7 +75,7 @@ const countFilmsOptions = (config) => {
     }
 
     if (isMarkedAsWatched) {
-      countWatced++;
+      countHistory++;
     }
 
     if (isFavorite) {
@@ -85,7 +85,7 @@ const countFilmsOptions = (config) => {
 
   countAllFilters.all = config.length;
   countAllFilters.watchlist = countWathlist;
-  countAllFilters.watched = countWatced;
+  countAllFilters.watched = countHistory;
   countAllFilters.favorite = countFavorite;
 
   return countAllFilters;

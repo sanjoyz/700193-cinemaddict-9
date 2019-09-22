@@ -40,7 +40,7 @@ export default class PageController {
     this._init();
   }
   _init() {
-    render(this._container, this._navigation.getElement(filters), Position.BEFOREEND);
+    render(this._container, this._navigation.getElement(), Position.BEFOREEND);
     render(this._container, this._sort.getElement(), Position.BEFOREEND);
     // render(this._container, this._statistic.getElement(), Position.BEFOREEND);
     render(this._container, this._filmsList.getElement(), Position.BEFOREEND);
@@ -51,11 +51,12 @@ export default class PageController {
     this._renderFooterFilmsNumber();
     this._renderStatistic();
   }
-
   _renderFilmsContainer(films, count = 5) {
     this._filmsList.getElement().querySelector(`.films-list__container`).innerHTML = ``;
     this._topRated.getElement().querySelector(`.films-list__container`).innerHTML = ``;
     this._mostCommented.getElement().querySelector(`.films-list__container`).innerHTML = ``;
+
+    // getAllFiltersConfig(this._constCardsConfig).reverse().forEach((filter) => this._renderFilters(this._navigationContainer, filter));
 
     this._filmListTopRatedController.setFilms(getMostValuesInFilms(`rating`, this._constCardsConfig));
     this._filmListMostCommentedController.setFilms(getMostValuesInFilms(`comments`, this._constCardsConfig));
@@ -119,6 +120,22 @@ export default class PageController {
     const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
   }
+  _renderSelectedFilms(filter) {
+    const selectedFilms = [];
+    this._constCardsConfig.slice().forEach((card) => {
+      if (filter === `Watchlist` && card.isAddedToWatchList) {
+        selectedFilms.push(card);
+      }
+      if (filter === `Favorites` && card.isFavorite) {
+        selectedFilms.push(card);
+      }
+      if (filter === `History` && card.isMarkedAsWatched) {
+        selectedFilms.push(card);
+      }
+    });
+    this._allFilmsCard = selectedFilms;
+    this._renderFilmsContainer(this._allFilmsCard.slice(), this._shownFilms);
+  }
 
   show(films) {
     this._allFilmsCard = films;
@@ -143,7 +160,7 @@ export default class PageController {
   }
   // переключение между статистикой и фильмами
   _onNavigationChange(evt) {
-    switch (evt.target.innerHTML) {
+    switch (evt.target.hash.slice(1)) {
       case `Stats`:
         this._statisticShow();
         this._filmsList.getElement().classList.add(`visually-hidden`);
@@ -151,6 +168,18 @@ export default class PageController {
       case `All movies`:
         this._statisticHide();
         this._filmsList.getElement().classList.remove(`visually-hidden`);
+        break;
+      case `Watchlist`:
+        this._statisticHide();
+        this._renderSelectedFilms(evt.target.hash.slice(1));
+        break;
+      case `History`:
+        this._statisticHide();
+        this._renderSelectedFilms(evt.target.hash.slice(1));
+        break;
+      case `Favorites`:
+        this._statisticHide();
+        this._renderSelectedFilms(evt.target.hash.slice(1));
         break;
     }
   }

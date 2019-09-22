@@ -12,10 +12,66 @@ export default class StatisticController {
     this._rank = rank;
     this._statistic = new Statistic(this._rank);
   }
+  _getArrayFilms(number) {
+    const statisticText = this._statistic.getElement().querySelector(`.statistic__text-list`);
+    if (statisticText) {
+      statisticText.parentNode.removeChild(statisticText);
+    }
+
+    const statChart = this._statistic.getElement().querySelector(`.statistic__chart-wrap`);
+    if (statChart) {
+      statChart.parentNode.removeChild(statChart);
+    }
+
+    render(this._container, this._statistic.getElement(), Position.BEFOREEND);
+    const newFilmsArray = () => {
+      const arr = [];
+      for (const value of this._films) {
+        if ((value.watchDate / 3600000) <= (Date.now() / 3600000) && (value.watchDate / 3600000) >= ((Date.now() / 3600000) - (number))) {
+          arr.push(value);
+        }
+      }
+      return arr;
+    };
+    this._renderStatText(newFilmsArray());
+    this._renderStatDiagram(newFilmsArray());
+  }
+
   init() {
-    render(this._container, this._statistic.getElement());
-    this._renderStatDiagram(this._films);
+    render(this._container, this._statistic.getElement(), Position.BEFOREEND);
     this._renderStatText(this._films);
+    this._renderStatDiagram(this._films);
+
+    this._statistic.getElement().querySelector(`#statistic-today`).addEventListener(`click`, () => {
+      this._getArrayFilms(24);
+    });
+
+    this._statistic.getElement().querySelector(`#statistic-week`).addEventListener(`click`, () => {
+      this._getArrayFilms(24 * 7);
+    });
+
+    this._statistic.getElement().querySelector(`#statistic-month`).addEventListener(`click`, () => {
+      this._getArrayFilms(24 * 7 * 4);
+    });
+
+    this._statistic.getElement().querySelector(`#statistic-year`).addEventListener(`click`, () => {
+      this._getArrayFilms(24 * 7 * 4 * 12);
+    });
+
+    this._statistic.getElement().querySelector(`#statistic-all-time`).addEventListener(`click`, () => {
+      const statisticText = this._statistic.getElement().querySelector(`.statistic__text-list`);
+      if (statisticText) {
+        statisticText.parentNode.removeChild(statisticText);
+      }
+
+      const statChart = this._statistic.getElement().querySelector(`.statistic__chart-wrap`);
+      if (statChart) {
+        statChart.parentNode.removeChild(statChart);
+      }
+
+      this._renderStatText(this._films);
+      this._renderStatDiagram(this._films);
+    });
   }
 
   _getStatTopGenre(films) {
@@ -23,7 +79,7 @@ export default class StatisticController {
     const func = (genre) => {
       const array = [genre];
       for (const value of films) {
-        if (value.genres.includes(genre)) {
+        if (value.genre.includes(genre)) {
           array.push(value);
         }
       }
@@ -39,13 +95,16 @@ export default class StatisticController {
   _renderStatText(films) {
     const statisticWatched = films.length;
     const statisticDuration = () => {
-      let count;
+      let count = 0;
       for (const value of films) {
-        count += value.duration;
+        // count += value.duration;
+        const hours = Number(value.duration.split(` `)[0].split(`h`)[0]);
+        const minutes = Number(value.duration.split(` `)[1].split(`m`)[0]);
+        count += (hours * 60) + minutes;
       }
       return count;
     };
-    const statTopGenre = this._getStatTopGenre(films);
+    const statTopGenre = this._getStatTopGenre(films)[0][0];
     let statText;
     if (films.length > 0) {
       statText = new StatisticText(statisticWatched, statisticDuration(), statTopGenre);

@@ -15,7 +15,7 @@ export default class StatisticText extends AbstractComponent {
         </li>
         <li class="statistic__text-item">
             <h4 class="statistic__item-title">Total duration</h4>
-            <p class="statistic__item-text">${this._statDuration}<span class="statistic__item-description">h</span> ${this._statDuration % 60} <span class="statistic__item-description">m</span></p>
+            <p class="statistic__item-text">${Math.trunc(this._statDuration / 60)}<span class="statistic__item-description">h</span> ${Math.trunc(this._statDuration % 60)} <span class="statistic__item-description">m</span></p>
         </li>
         <li class="statistic__text-item">
             <h4 class="statistic__item-title">Top genre</h4>

@@ -5,7 +5,7 @@ import ShowMoreButton from '../components/show-more-button.js';
 import Sort from '../components/sort.js';
 import Navigation from '../components/navigation.js';
 import MovieController from '../controllers/movie-controller.js';
-import Statistic from '../components/statistic.js';
+// import Statistic from '../components/statistic.js';
 import FilmListController from '../controllers/film-list-controller.js';
 import TopRated from '../components/top-rated.js';
 import MostCommented from '../components/most-commented.js';
@@ -23,7 +23,7 @@ export default class PageController {
     this._filmsList = new FilmList();
     this._showMoreButton = new ShowMoreButton();
     this._sort = new Sort();
-    this._statistic = new Statistic();
+    // this._statistic = new Statistic();
     this._navigation = new Navigation();
     this._topRated = new TopRated();
     this._mostCommented = new MostCommented();
@@ -42,13 +42,14 @@ export default class PageController {
   _init() {
     render(this._container, this._navigation.getElement(filters), Position.BEFOREEND);
     render(this._container, this._sort.getElement(), Position.BEFOREEND);
-    render(this._container, this._statistic.getElement(), Position.BEFOREEND);
+    // render(this._container, this._statistic.getElement(), Position.BEFOREEND);
     render(this._container, this._filmsList.getElement(), Position.BEFOREEND);
     render(this._container.querySelector(`.films`), this._topRated.getElement(), Position.BEFOREEND);
     render(this._container.querySelector(`.films`), this._mostCommented.getElement(), Position.BEFOREEND);
     this._sort.getElement().addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
     this._navigation.getElement(filters).addEventListener(`click`, (evt) => this._onNavigationChange(evt));
     this._renderFooterFilmsNumber();
+    this._renderStatistic();
   }
 
   _renderFilmsContainer(films, count = 5) {
@@ -76,11 +77,31 @@ export default class PageController {
     const filmsList = this._filmsList.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreButton.getElement(), Position.BEFOREEND);
   }
-
+  _renderStatistic() {
+    const getFilmsWatched = () => {
+      const filmsWatched = [];
+      for (const value of this._films) {
+        if (value.isMarkedAsWatched) {
+          filmsWatched.push(value);
+        }
+      }
+      return filmsWatched;
+    };
+    const statistic = new StatisticController(this._container, getFilmsWatched(), getProfileRank());
+    statistic.init();
+  }
+  _deleteStatistic() {
+    const statistic = this._container.querySelector(`.statistic`);
+    if (statistic) {
+      statistic.parentNode.removeChild(statistic);
+    }
+  }
   _onDataChange(newData, oldData) {
     const index = this._films.findIndex((film) => film === oldData);
     this._films[index] = newData;
     this._renderFilmsContainer(this._films, this._shownFilms);
+    this._deleteStatistic();
+    this._renderStatistic();
   }
   /* _onChangeView() {
     this._subscriptions.forEach((it) => it());
@@ -114,23 +135,11 @@ export default class PageController {
 
   // скрываем статистику
   _statisticHide() {
-    this._statistic.getElement().classList.add(`visually-hidden`);
+    this._container.querySelector(`.statistic`).classList.add(`visually-hidden`);
   }
   // показываем статистику
   _statisticShow() {
-
-    const getFilmsWatched = () => {
-      const filmsWatched = [];
-      for (const value of this._films) {
-        if (value._isWatched) {
-          filmsWatched.push(value);
-        }
-      }
-      return filmsWatched;
-    };
-    const statistic = new StatisticController(this._container, getFilmsWatched(), getProfileRank());
-    statistic.init();
-    this._statistic.getElement().classList.remove(`visually-hidden`);
+    this._container.querySelector(`.statistic`).classList.remove(`visually-hidden`);
   }
   // переключение между статистикой и фильмами
   _onNavigationChange(evt) {

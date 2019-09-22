@@ -116,6 +116,7 @@ const getFilm = () => ({
   rating: getRandomNumber(0, 11),
   // commentsCount: getRandomNumber(0, 8),
   releaseDate: moment(new Date(Date.now() - getRandomNumber(0, 10) * 365 * 7 * 24 * 60 * 60 * 1000)),
+  watchDate: Date.now() - getRandomNumber(0, 2) * 12 * getRandomNumber(0, 7) * 24 * 60 * 60 * 1000,
   genre: MOCK_GENRES[getRandomNumber(0, MOCK_GENRES.length - 1)],
   duration: `${getRandomNumber(0, 4)}h ${getRandomNumber(0, 60)}m`,
   country: MOCK_COUNTRIES[getRandomNumber(0, MOCK_COUNTRIES.length + 1)],

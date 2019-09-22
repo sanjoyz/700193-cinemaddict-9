@@ -1,4 +1,3 @@
-
 // import {getProfileRank} from './utils.js';
 import {render} from './utils.js';
 import PageController from './controllers/page-controller.js';

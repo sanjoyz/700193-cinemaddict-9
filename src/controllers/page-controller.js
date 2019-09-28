@@ -14,7 +14,7 @@ import StatisticController from './statistic-controller.js';
 const FILMS_IN_ROW = 5;
 
 export default class PageController {
-  constructor(container, films) {
+  constructor(container, films, _onDataChange) {
     this._container = container;
     this._films = films;
     this._shownFilms = FILMS_IN_ROW;
@@ -50,6 +50,7 @@ export default class PageController {
     this._navigation.getElement(filters).addEventListener(`click`, (evt) => this._onNavigationChange(evt));
     this._renderFooterFilmsNumber();
     this._renderStatistic();
+    this._show(this._films);
   }
   _renderFilmsContainer(films, count = 5) {
     this._filmsList.getElement().querySelector(`.films-list__container`).innerHTML = ``;
@@ -141,7 +142,7 @@ export default class PageController {
     this._renderFilmsContainer(this._allFilmsCard.slice(), this._shownFilms);
   }
 
-  show(films) {
+  _show(films) {
     this._allFilmsCard = films;
     this._constCardsConfig = films;
     this._currentlyCardsConfig = films;

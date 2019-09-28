@@ -5,7 +5,6 @@ export default class FilmDetails extends AbstractComponent {
     Object.keys(film).forEach(function (key) {
       this[`_${key}`] = film[key];
     }.bind(this));
-    debugger;
   }
   getTemplate() {
     return `<section class="film-details">
@@ -59,9 +58,9 @@ export default class FilmDetails extends AbstractComponent {
                 <td class="film-details__cell">${this._country}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">Genres</td>
+                <td class="film-details__term">${this._genre.length > 1 ? `Genres` : `Genre`}</td>
                 <td class="film-details__cell">
-                  <span class="film-details__genre">${this._genre}</span>                  
+                  ${this._genre.map((item) => `<span class="film-details__genre">${item}</span>`).join(``)}
                 </td>
               </tr>
             </tbody></table>
@@ -72,7 +71,7 @@ export default class FilmDetails extends AbstractComponent {
           </div>
         </div>
 
-        <section class="film-details__controls">
+        <section class="film-details__controls">        
           <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${this._isAddedtoWatchList ? `checked="true"` : `checked="false"`}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 

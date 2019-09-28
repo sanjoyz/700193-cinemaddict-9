@@ -101,13 +101,15 @@ export default class MovieController {
   _rateFilm(film) {
     const filmWatchedButton = this._filmDetails.getElement().querySelector(`#watched`);
     const userRating = new UserFilmRating(film);
-    filmWatchedButton.addEventListener(`click`, () => {
+    filmWatchedButton.addEventListener(`click`, (evt) => {
       if (filmWatchedButton.checked === true) {
         const sectionTop = this._filmDetails.getElement().querySelector(`.form-details__bottom-container`);
         render(sectionTop, userRating.getElement(), Position.BEFORE);
       } else {
         document.querySelector(`.form-details__middle-container`).remove();
       }
+      film.isMarkedAsWatched = evt.target.checked;
+      this._onDataChange(film, this._data);
     });
   }
   _addEmoji() {

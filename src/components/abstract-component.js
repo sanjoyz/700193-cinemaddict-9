@@ -1,4 +1,4 @@
-import {createElement, deleteElement} from '../utils.js';
+import {createElement} from "../utils/functions";
 export default class AbstractComponent {
   constructor() {
     if (new.target === AbstractComponent) {
@@ -6,16 +6,19 @@ export default class AbstractComponent {
     }
     this._element = null;
   }
-  getElement(x) {
+  getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate(x));
+      this._element = createElement(this.getTemplate());
     }
     return this._element;
   }
   removeElement() {
-    deleteElement(this._element);
-    this._element = null;
+    if (this._element) {
+      this._element = null;
+    }
+    return this._element;
   }
+
   getTemplate() {
     throw Error(`Abstract method not implemented`);
   }

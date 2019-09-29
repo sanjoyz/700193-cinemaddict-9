@@ -17,7 +17,7 @@ export default class FilmDetails extends AbstractComponent {
           <div class="film-details__poster">
             <img class="film-details__poster-img" src="${this._poster}" alt="">
 
-            <p class="film-details__age">${this._age}</p>
+            <p class="film-details__age">${this._ageRating}</p>
           </div>
 
           <div class="film-details__info">
@@ -58,9 +58,9 @@ export default class FilmDetails extends AbstractComponent {
                 <td class="film-details__cell">${this._country}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">Genres</td>
+                <td class="film-details__term">${this._genre.length > 1 ? `Genres` : `Genre`}</td>
                 <td class="film-details__cell">
-                  <span class="film-details__genre">${this._genre}</span>                  
+                  ${this._genre.map((item) => `<span class="film-details__genre">${item}</span>`).join(``)}
                 </td>
               </tr>
             </tbody></table>
@@ -71,14 +71,14 @@ export default class FilmDetails extends AbstractComponent {
           </div>
         </div>
 
-        <section class="film-details__controls">
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+        <section class="film-details__controls">        
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${this._isAddedtoWatchList ? `checked="true"` : `checked="false"`}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${this._isMarkedAsWatched ? `checked="true"` : `checked="false"`}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+          <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${this._isFavorite ? `checked="true"` : `checked="false"`}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>

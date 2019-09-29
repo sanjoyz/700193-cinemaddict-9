@@ -97,10 +97,10 @@ export default class StatisticController {
     const statisticDuration = () => {
       let count = 0;
       for (const value of films) {
-        // count += value.duration;
-        const hours = Number(value.duration.split(` `)[0].split(`h`)[0]);
-        const minutes = Number(value.duration.split(` `)[1].split(`m`)[0]);
-        count += (hours * 60) + minutes;
+        count += value.duration;
+        // const hours = Number(value.duration.split(` `)[0].split(`h`)[0]);
+        // const minutes = Number(value.duration.split(` `)[1].split(`m`)[0]);
+        // count += (hours * 60) + minutes;
       }
       return count;
     };

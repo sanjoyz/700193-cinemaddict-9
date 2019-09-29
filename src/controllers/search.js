@@ -1,5 +1,5 @@
 import {MIN_SEARCH_STRING_LENGTH, ListTitles} from "../utils/constants";
-import {removeElement, renderElement} from "../utils/functions";
+import {removeElement, render} from "../utils/functions";
 import FilmCardsController from "./film-cards";
 import SearchResult from "../components/search-result";
 import SearchNoResult from "../components/search-no-result";
@@ -64,15 +64,15 @@ export default class SearchController {
       removeElement(this._noResult.getElement());
       this._noResult.removeElement();
       this._searchResult = new SearchResult(cards.length);
-      renderElement(this._container, this._searchResult.getElement());
-      renderElement(this._container, this._filmsList.getElement());
+      render(this._container, this._searchResult.getElement());
+      render(this._container, this._filmsList.getElement());
       const filmsListContainer = this._filmsList.getElement().querySelector(`.films-list__container`);
       const filmCardsController = new FilmCardsController(filmsListContainer, this._onDataChange.bind(this));
       filmCardsController.setFilmCards(cards);
     } else {
       removeElement(this._filmsList.getElement());
       this._filmsList.removeElement();
-      renderElement(this._container, this._noResult.getElement());
+      render(this._container, this._noResult.getElement());
     }
   }
 }

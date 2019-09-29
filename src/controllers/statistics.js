@@ -1,4 +1,4 @@
-import {countDuplicateElements, removeElement, renderElement} from "../utils/functions";
+import {countDuplicateElements, removeElement, render} from "../utils/functions";
 import Statistics from "../components/statistic";
 import StatisticFilters from "../components/statsitic-filters";
 import Chart from "chart.js";
@@ -41,7 +41,7 @@ export default class StatisticsController {
     removeElement(this._filters.getElement());
     this._filters.removeElement();
     this._filters = new StatisticFilters(cards);
-    renderElement(this._container, this._filters.getElement());
+    render(this._container, this._filters.getElement());
     const filterInputs = this._filters.getElement().querySelectorAll(`.statistic__filters-input`);
     filterInputs.forEach((input) => input.addEventListener(`change`, (evt) => this._onFilterInputChange(evt, cards)));
   }
@@ -50,7 +50,7 @@ export default class StatisticsController {
     removeElement(this._statistics.getElement());
     this._statistics.removeElement();
     this._statistics = new Statistics(cards);
-    renderElement(this._filters.getElement(), this._statistics.getElement());
+    render(this._filters.getElement(), this._statistics.getElement());
   }
 
   _renderCharts(cards) {

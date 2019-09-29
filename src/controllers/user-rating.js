@@ -1,5 +1,5 @@
 import {AUTHORIZATION, CARDS_STORE_KEY, END_POINT, ErrorTypes} from "../utils/constants";
-import {isOnline, removeElement, renderElement} from "../utils/functions";
+import {isOnline, removeElement, render} from "../utils/functions";
 import UserRating from "../components/user-film-rating";
 import API from "../api";
 import Store from "../store";
@@ -45,7 +45,7 @@ export default class UserRatingController {
     this._userRatingForm.removeElement();
     this._userRatingForm = new UserRating(this._card);
     const ratingFormContainer = this._container.querySelector(`.form-details__middle-container`);
-    renderElement(ratingFormContainer, this._userRatingForm.getElement());
+    render(ratingFormContainer, this._userRatingForm.getElement());
 
     if (!this._card.isWatched) {
       this._userRatingForm.getElement().classList.add(`visually-hidden`);

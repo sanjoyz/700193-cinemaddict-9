@@ -8,7 +8,7 @@ const createElement = (template) => {
   containerElement.innerHTML = template;
   return containerElement.firstChild;
 };
-const renderElement = (container, element, position = Position.BEFOREEND) => {
+const render = (container, element, position = Position.BEFOREEND) => {
   switch (position) {
     case Position.AFTERBEGIN:
       container.prepend(element);
@@ -61,4 +61,4 @@ const objectToArray = (object) => {
   return Object.keys(object).map((id) => object[id]);
 };
 
-export {trimString, createElement, renderElement, removeElement, getUserTitle, countDuplicateElements, checkStatus, toJSON, isOnline, objectToArray};
+export {trimString, createElement, render, removeElement, getUserTitle, countDuplicateElements, checkStatus, toJSON, isOnline, objectToArray};

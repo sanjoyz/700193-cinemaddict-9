@@ -1,5 +1,5 @@
 import {Filters, MIN_SEARCH_STRING_LENGTH, Position, Screens, States} from "../utils/constants";
-import {removeElement, renderElement} from "../utils/functions";
+import {removeElement, render} from "../utils/functions";
 import Menu from "../components/menu";
 import debounce from "lodash.debounce";
 
@@ -50,7 +50,7 @@ export default class MenuController {
     removeElement(this._menu.getElement());
     this._menu.removeElement();
     this._menu = new Menu(this._cards);
-    renderElement(this._container, this._menu.getElement(), Position.AFTERBEGIN);
+    render(this._container, this._menu.getElement(), Position.AFTERBEGIN);
     const activeFilterElement = this._menu.getElement().querySelector(`[data-filter="${this._activeFilter.TYPE}"]`);
     activeFilterElement.classList.add(`main-navigation__item--active`);
     this._menu.getElement().addEventListener(`click`, (evt) => this._onFilterLinkClick(evt));

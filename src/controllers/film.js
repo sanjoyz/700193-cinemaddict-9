@@ -1,5 +1,5 @@
 import {Actions} from "../utils/constants";
-import {removeElement, renderElement} from "../utils/functions";
+import {removeElement, render} from "../utils/functions";
 import CommentsController from "./comments";
 import FilmCard from "../components/film-card";
 import FilmDetails from "../components/film-details";
@@ -82,7 +82,7 @@ export default class FilmController {
 
     const renderFilmDetails = () => {
       this._onChangeView();
-      renderElement(document.body, this._filmDetails.getElement());
+      render(document.body, this._filmDetails.getElement());
       renderCommentsForm();
       this._filmDetails.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, () => {
         hideFilmDetails();
@@ -98,7 +98,7 @@ export default class FilmController {
 
     this._filmCard.getElement().querySelectorAll(`.film-card__title, .film-card__poster, .film-card__comments`).forEach((element) => element.addEventListener(`click`, renderFilmDetails));
     this._filmCard.getElement().querySelector(`.film-card__controls`).addEventListener(`click`, (evt) => onControlButtonClick(evt));
-    renderElement(this._container, this._filmCard.getElement());
+    render(this._container, this._filmCard.getElement());
   }
 
   setDefaultView() {

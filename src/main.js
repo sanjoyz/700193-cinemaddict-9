@@ -1,5 +1,5 @@
 import {AUTHORIZATION, END_POINT, CARDS_STORE_KEY, States} from "./utils/constants";
-import {removeElement, renderElement, isOnline} from "./utils/functions";
+import {removeElement, render, isOnline} from "./utils/functions";
 import MenuController from "./controllers/menu";
 import PageController from "./controllers/page";
 import SearchController from "./controllers/search";
@@ -45,8 +45,8 @@ searchController.init();
 statisticsController.init();
 menuController.init();
 
-renderElement(headerElement, search.getElement());
-renderElement(mainElement, loader.getElement());
+render(headerElement, search.getElement());
+render(mainElement, loader.getElement());
 
 const renderPage = ((cards) => {
   removeElement(loader.getElement());
@@ -54,11 +54,11 @@ const renderPage = ((cards) => {
 
   const profileRating = new ProfileRating(cards);
   removeElement(headerElement.querySelector(`.profile`));
-  renderElement(headerElement, profileRating.getElement());
+  render(headerElement, profileRating.getElement());
 
   const statisticsText = new StatisticsText(cards);
   removeElement(footerElement.querySelector(`.footer__statistics`));
-  renderElement(footerElement, statisticsText.getElement());
+  render(footerElement, statisticsText.getElement());
   pageController.show(cards);
   menuController.show(cards);
 

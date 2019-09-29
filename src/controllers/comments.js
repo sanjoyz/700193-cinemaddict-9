@@ -1,5 +1,5 @@
 import {AUTHORIZATION, COMMENTS_STORE_KEY, END_POINT, ErrorTypes} from "../utils/constants";
-import {removeElement, renderElement, isOnline} from "../utils/functions";
+import {removeElement, render, isOnline} from "../utils/functions";
 import CommentsForm from "../components/comments";
 import API from "../api";
 import Store from "../store";
@@ -29,7 +29,7 @@ export default class CommentsController {
     this._commentsForm.removeElement();
     this._provider.getComments({id: this._id}).then((comments) => {
       this._commentsForm = new CommentsForm(comments);
-      renderElement(this._container, this._commentsForm.getElement());
+      render(this._container, this._commentsForm.getElement());
       const inputField = this._commentsForm.getElement().querySelector(`.film-details__comment-input`);
       const deleteButtons = this._commentsForm.getElement().querySelectorAll(`.film-details__comment-delete`);
       if (!isOnline()) {

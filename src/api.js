@@ -1,6 +1,6 @@
 import {Method} from "./utils/constants";
 import {checkStatus, toJSON} from "./utils/functions";
-import ModelCard from "./models/film";
+import ModelFilm from "./models/film";
 import ModelComment from "./models/comment";
 
 export default class API {
@@ -12,7 +12,7 @@ export default class API {
   getCards() {
     return this._load({url: `movies`})
       .then(toJSON)
-      .then(ModelCard.parseCards);
+      .then(ModelFilm.parseFilms);
   }
 
   syncCards({cards}) {
@@ -33,7 +33,7 @@ export default class API {
       headers: new Headers({'Content-Type': `application/json`}),
     })
       .then(toJSON)
-      .then(ModelCard.parseCard);
+      .then(ModelFilm.parseFilm);
   }
 
   getComments({id}) {

@@ -1,7 +1,7 @@
-import {trimString} from "../utils/functions";
+import {trimFilmDescription} from "../utils/functions";
 import moment from "moment";
 
-export default class ModelCard {
+export default class ModelFilm {
   constructor(data) {
     this.id = data[`id`];
     this.title = data[`film_info`][`title`];
@@ -10,7 +10,7 @@ export default class ModelCard {
     this.duration = data[`film_info`][`runtime`];
     this.genre = data[`film_info`][`genre`][0] || `No genre`;
     this.poster = data[`film_info`][`poster`];
-    this.description = trimString(data[`film_info`][`description`]);
+    this.description = trimFilmDescription(data[`film_info`][`description`]);
     this.commentsAmount = data[`comments`].length;
     this.inWatchlist = data[`user_details`][`watchlist`];
     this.isWatched = data[`user_details`][`already_watched`];
@@ -29,41 +29,41 @@ export default class ModelCard {
     this.description = data[`film_info`][`description`];
   }
 
-  static parseCard(data) {
-    return new ModelCard(data);
+  static parseFilm(data) {
+    return new ModelFilm(data);
   }
 
-  static parseCards(data) {
-    return data.map(ModelCard.parseCard);
+  static parseFilms(data) {
+    return data.map(ModelFilm.parseFilm);
   }
 
-  static toRAW(card) {
+  static toRAW(film) {
     return {
-      'id': card.id,
-      'comments': card.comments,
+      'id': film.id,
+      'comments': film.comments,
       'film_info': {
-        'title': card.title,
-        'alternative_title': card.originalTitle,
-        'total_rating': card.rating,
-        'poster': card.poster,
-        'age_rating': card.age,
-        'director': card.director,
-        'writers': [...card.writers],
-        'actors': [...card.actors],
+        'title': film.title,
+        'alternative_title': film.originalTitle,
+        'total_rating': film.rating,
+        'poster': film.poster,
+        'age_rating': film.age,
+        'director': film.director,
+        'writers': [...film.writers],
+        'actors': [...film.actors],
         'release': {
-          'date': card.releaseDate,
-          'release_country': card.country,
+          'date': film.releaseDate,
+          'release_country': film.country,
         },
-        'runtime': card.duration,
-        'genre': [...card.genres],
-        'description': card.description,
+        'runtime': film.duration,
+        'genre': [...film.genres],
+        'description': film.description,
       },
       'user_details': {
-        'personal_rating': Number(card.userRating) || 0,
-        'watchlist': card.inWatchlist,
-        'already_watched': card.isWatched,
-        'watching_date': moment(card.watchingDate).toISOString() || moment().toISOString(),
-        'favorite': card.isFavorite,
+        'personal_rating': Number(film.userRating) || 0,
+        'watchlist': film.inWatchlist,
+        'already_watched': film.isWatched,
+        'watching_date': moment(film.watchingDate).toISOString() || moment().toISOString(),
+        'favorite': film.isFavorite,
       },
     };
   }

@@ -1,8 +1,5 @@
-import {Description, Position, UserRating} from "./constants";
+import {Description, Position, UserRank} from "./constants";
 
-const trimString = (string) => {
-  return string.length < Description.LENGTH.MAX ? string : `${string.slice(0, Description.LENGTH.TO_DISPLAY).trim()}…`;
-};
 const createElement = (template) => {
   const containerElement = document.createElement(`div`);
   containerElement.innerHTML = template;
@@ -23,19 +20,19 @@ const removeElement = (element) => {
     element.remove();
   }
 };
-const getUserTitle = (amount) => {
-  let title;
+const getUserRank = (amount) => {
+  let rank;
 
-  if (amount >= UserRating.MILESTONES.FIRST && amount <= UserRating.MILESTONES.SECOND) {
-    title = UserRating.TITLES.FIRST;
-    return title;
-  } else if (amount >= UserRating.MILESTONES.THIRD && amount <= UserRating.MILESTONES.FOURTH) {
-    title = UserRating.TITLES.SECOND;
-    return title;
+  if (amount >= UserRank.MILESTONES.FIRST && amount <= UserRank.MILESTONES.SECOND) {
+    rank = UserRank.TITLES.FIRST;
+    return rank;
+  } else if (amount >= UserRank.MILESTONES.THIRD && amount <= UserRank.MILESTONES.FOURTH) {
+    rank = UserRank.TITLES.SECOND;
+    return rank;
   }
 
-  title = UserRating.TITLES.THIRD;
-  return title;
+  rank = UserRank.TITLES.THIRD;
+  return rank;
 };
 const countDuplicateElements = (list) => {
   let counts = {};
@@ -61,4 +58,8 @@ const objectToArray = (object) => {
   return Object.keys(object).map((id) => object[id]);
 };
 
-export {trimString, createElement, render, removeElement, getUserTitle, countDuplicateElements, checkStatus, toJSON, isOnline, objectToArray};
+const trimFilmDescription = (description) => {
+  return description.length < Description.LENGTH.MAX ? description : `${description.slice(0, Description.LENGTH.TO_DISPLAY).trim()}…`;
+};
+
+export {createElement, render, removeElement, getUserRank, countDuplicateElements, checkStatus, toJSON, isOnline, objectToArray, trimFilmDescription};

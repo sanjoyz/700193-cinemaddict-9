@@ -40,7 +40,7 @@ const Description = {
     TO_DISPLAY: 139,
   },
 };
-const UserRating = {
+const UserRank = {
   MILESTONES: {
     FIRST: 1,
     SECOND: 10,
@@ -151,4 +151,4 @@ const ErrorTypes = {
   RATING_INPUT: `rating-input-error`,
 };
 
-export {FILMS_AMOUNT, CATEGORY_FILMS_AMOUNT, MIN_SEARCH_STRING_LENGTH, AUTHORIZATION, END_POINT, CARDS_STORE_KEY, COMMENTS_STORE_KEY, Emojis, Description, UserRating, Position, ListTitles, Sorting, Actions, Screens, States, Filters, Method, ErrorTypes};
+export {FILMS_AMOUNT, CATEGORY_FILMS_AMOUNT, MIN_SEARCH_STRING_LENGTH, AUTHORIZATION, END_POINT, CARDS_STORE_KEY, COMMENTS_STORE_KEY, Emojis, Description, UserRank, Position, ListTitles, Sorting, Actions, Screens, States, Filters, Method, ErrorTypes};

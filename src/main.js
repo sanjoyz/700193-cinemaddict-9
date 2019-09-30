@@ -8,7 +8,7 @@ import Search from "./components/search";
 import ProfileRating from "./components/profile";
 import Loader from "./components/loader";
 import StatisticsText from "./components/statistic-text";
-import ModelCard from "./models/film";
+import ModelFilm from "./models/film";
 import API from "./api";
 import Provider from "./provider";
 import Store from "./store";
@@ -25,7 +25,7 @@ const loader = new Loader();
 const onDataChange = (update) => {
   provider.updateCard({
     id: update.id,
-    data: ModelCard.toRAW(update),
+    data: ModelFilm.toRAW(update),
   })
     .then(() => {
       provider.getCards()

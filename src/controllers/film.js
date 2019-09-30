@@ -3,7 +3,7 @@ import {removeElement, render} from "../utils/functions";
 import CommentsController from "./comments";
 import FilmCard from "../components/film-card";
 import FilmDetails from "../components/film-details";
-import UserRatingController from "./user-rating";
+import UserRankController from "./user-rating";
 import moment from "moment";
 
 export default class FilmController {
@@ -29,7 +29,7 @@ export default class FilmController {
       commentsController.init();
     };
 
-    const userRatingFormController = new UserRatingController(this._filmDetails.getElement(), this._data, this._onDataChange.bind(this));
+    const userRatingFormController = new UserRankController(this._filmDetails.getElement(), this._data, this._onDataChange.bind(this));
     userRatingFormController.init();
     let ratingFormShown;
 

@@ -1,5 +1,5 @@
 import {Filters} from "../utils/constants";
-import {getUserTitle} from "../utils/functions";
+import {getUserRank} from "../utils/functions";
 import AbstractComponent from "./abstract-component";
 
 export default class StatisticFilters extends AbstractComponent {
@@ -13,7 +13,7 @@ export default class StatisticFilters extends AbstractComponent {
     <p class="statistic__rank">
       Your rank 
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35"> 
-      <span class="statistic__rank-label">${getUserTitle(this._cards.filter((card) => card.isWatched).length)}</span>
+      <span class="statistic__rank-label">${getUserRank(this._cards.filter((card) => card.isWatched).length)}</span>
     </p>
     <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
       <p class="statistic__filters-description">Show stats:</p>

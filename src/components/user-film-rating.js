@@ -1,6 +1,6 @@
 import AbstractComponent from "./abstract-component";
 
-export default class UserRating extends AbstractComponent {
+export default class UserRank extends AbstractComponent {
   constructor({title, poster}) {
     super();
     this._title = title;

@@ -1,5 +1,5 @@
 import {objectToArray} from "./utils/functions";
-import ModelCard from "./models/film";
+import ModelFilm from "./models/film";
 import ModelComment from "./models/comment";
 
 export default class Provider {
@@ -13,14 +13,14 @@ export default class Provider {
     if (this._isOnline()) {
       return this._api.getCards()
         .then((cards) => {
-          cards.map((card) => this._store.setItem({key: card.id, item: ModelCard.toRAW(card)}));
+          cards.map((card) => this._store.setItem({key: card.id, item: ModelFilm.toRAW(card)}));
           return cards;
         });
     }
 
     const rawCardsMap = this._store.getAll();
     const rawCards = objectToArray(rawCardsMap);
-    const cards = ModelCard.parseCards(rawCards);
+    const cards = ModelFilm.parseFilms(rawCards);
     return Promise.resolve(cards);
   }
 
@@ -32,14 +32,14 @@ export default class Provider {
     if (this._isOnline()) {
       return this._api.updateCard({id, data})
         .then((card) => {
-          this._store.setItem({key: card.id, item: ModelCard.toRAW(card)});
+          this._store.setItem({key: card.id, item: ModelFilm.toRAW(card)});
           return card;
         });
     }
 
     const card = data;
     this._store.setItem({key: card.id, item: card});
-    return Promise.resolve(ModelCard.parseCard(card));
+    return Promise.resolve(ModelFilm.parseFilm(card));
   }
 
   getComments({id}) {

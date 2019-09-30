@@ -1,18 +1,18 @@
 import {AUTHORIZATION, CARDS_STORE_KEY, END_POINT, ErrorTypes} from "../utils/constants";
 import {isOnline, removeElement, render} from "../utils/functions";
-import UserRating from "../components/user-film-rating";
+import UserRank from "../components/user-film-rating";
 import API from "../api";
 import Store from "../store";
 import Provider from "../provider";
-import ModelCard from "../models/film";
+import ModelFilm from "../models/film";
 
-export default class UserRatingController {
+export default class UserRankController {
   constructor(container, card, onDataChange) {
     this._container = container;
     this._card = card;
     this._onDataChange = onDataChange;
 
-    this._userRatingForm = new UserRating(this._card);
+    this._userRatingForm = new UserRank(this._card);
     this._userRatingElement = this._container.querySelector(`.film-details__user-rating`);
     this._api = new API({endPoint: END_POINT, authorization: AUTHORIZATION});
     this._store = new Store({key: CARDS_STORE_KEY, storage: localStorage});
@@ -33,17 +33,17 @@ export default class UserRatingController {
 
   hide() {
     this._userRatingForm.getElement().classList.add(`visually-hidden`);
-    this._resetUserRating();
+    this._resetUserRank();
   }
 
   init() {
-    this._renderUserRatingForm();
+    this._renderUserRankForm();
   }
 
-  _renderUserRatingForm() {
+  _renderUserRankForm() {
     removeElement(this._userRatingForm.getElement());
     this._userRatingForm.removeElement();
-    this._userRatingForm = new UserRating(this._card);
+    this._userRatingForm = new UserRank(this._card);
     const ratingFormContainer = this._container.querySelector(`.form-details__middle-container`);
     render(ratingFormContainer, this._userRatingForm.getElement());
 
@@ -62,13 +62,13 @@ export default class UserRatingController {
     const undoButton = this._userRatingForm.getElement().querySelector(`.film-details__watched-reset`);
     undoButton.addEventListener(`click`, (evt) => {
       evt.preventDefault();
-      this._resetUserRating();
+      this._resetUserRank();
     });
   }
 
   _setFilmCard(card) {
     this._card = card;
-    this._renderUserRatingForm();
+    this._renderUserRankForm();
   }
 
   _onRatingInputChange(evt) {
@@ -86,20 +86,20 @@ export default class UserRatingController {
     this._card.userRating = Number(evt.target.value);
     this._provider.updateCard({
       id: this._card.id,
-      data: ModelCard.toRAW(this._card),
+      data: ModelFilm.toRAW(this._card),
     })
       .then(() => {
         this._onDataChange(this._card.id);
       })
       .catch(() => {
-        this._resetUserRating();
+        this._resetUserRank();
         const ratingInputLabel = this._userRatingForm.getElement().querySelector(`[for="${evt.target.id}"]`);
         ratingInputLabel.classList.add(ErrorTypes.RATING_INPUT);
         this._userRatingForm.getElement().classList.add(ErrorTypes.RATING_FORM);
       });
   }
 
-  _resetUserRating() {
+  _resetUserRank() {
     this._userRatingElement.textContent = ``;
 
     if (this._card.userRating) {

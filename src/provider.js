@@ -1,4 +1,4 @@
-import {objectToArray} from "./utils/functions";
+import {getArrayFromObject} from "./utils/functions";
 import ModelFilm from "./models/film";
 import ModelComment from "./models/comment";
 
@@ -19,13 +19,13 @@ export default class Provider {
     }
 
     const rawCardsMap = this._store.getAll();
-    const rawCards = objectToArray(rawCardsMap);
+    const rawCards = getArrayFromObject(rawCardsMap);
     const cards = ModelFilm.parseFilms(rawCards);
     return Promise.resolve(cards);
   }
 
   syncCards() {
-    return this._api.syncCards({cards: objectToArray(this._store.getAll())});
+    return this._api.syncCards({cards: getArrayFromObject(this._store.getAll())});
   }
 
   updateCard({id, data}) {
@@ -52,7 +52,7 @@ export default class Provider {
     }
 
     const rawCommentsMap = this._store.getAll();
-    const rawComments = objectToArray(rawCommentsMap);
+    const rawComments = getArrayFromObject(rawCommentsMap);
     const comments = rawComments.map((rawComment) => {
       ModelComment.parseComments(rawComment);
     });

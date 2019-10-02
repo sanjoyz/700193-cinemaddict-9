@@ -70,7 +70,7 @@ export default class FilmDetails extends AbstractComponent {
           </table>
 
           <p class="film-details__film-description">
-            ${this._description}
+            ${this._descriptionFull}
           </p>
         </div>
       </div>

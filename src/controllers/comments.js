@@ -8,10 +8,10 @@ import ModelComment from "../models/comment";
 import moment from "moment";
 
 export default class CommentsController {
-  constructor(container, id, callback, onDataChange) {
+  constructor(container, id, onEscKeyDown, onDataChange) {
     this._container = container;
     this._id = id;
-    this._callback = callback;
+    this._onEscKeyDown = onEscKeyDown;
     this._onDataChangeMain = onDataChange;
 
     this._commentsForm = new CommentsForm([]);
@@ -40,10 +40,10 @@ export default class CommentsController {
       } else {
         inputField.addEventListener(`keydown`, (evt) => this._onEnterKeydown(evt));
         inputField.addEventListener(`focus`, () => {
-          document.removeEventListener(`keydown`, this._callback);
+          document.removeEventListener(`keydown`, this._onEscKeyDown);
         });
         inputField.addEventListener(`blur`, () => {
-          document.addEventListener(`keydown`, this._callback);
+          document.addEventListener(`keydown`, this._onEscKeyDown);
         });
         deleteButtons.forEach((button, index) => button.addEventListener(`click`, (evt) => {
           evt.preventDefault();

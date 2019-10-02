@@ -42,11 +42,11 @@ const Description = {
 };
 const UserRank = {
   MILESTONES: {
+    ZERO: 0,
     FIRST: 1,
     SECOND: 10,
     THIRD: 11,
     FOURTH: 20,
-    FIFTH: 21,
   },
   TITLES: {
     FIRST: `Novice`,

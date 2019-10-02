@@ -80,7 +80,7 @@ export default class FilmController {
       }
     };
 
-    const renderFilmDetails = () => {
+    const onRenderFilmDetailsClick = () => {
       this._onChangeView();
       render(document.body, this._filmDetails.getElement());
       renderCommentsForm();
@@ -96,7 +96,7 @@ export default class FilmController {
       showRatingForm();
     }
 
-    this._filmCard.getElement().querySelectorAll(`.film-card__title, .film-card__poster, .film-card__comments`).forEach((element) => element.addEventListener(`click`, renderFilmDetails));
+    this._filmCard.getElement().querySelectorAll(`.film-card__title, .film-card__poster, .film-card__comments`).forEach((element) => element.addEventListener(`click`, onRenderFilmDetailsClick));
     this._filmCard.getElement().querySelector(`.film-card__controls`).addEventListener(`click`, (evt) => onControlButtonClick(evt));
     render(this._container, this._filmCard.getElement());
   }

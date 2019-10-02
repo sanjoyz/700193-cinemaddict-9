@@ -1,5 +1,5 @@
 import {Description, Position, UserRank} from "./constants";
-
+import moment from "moment";
 const createElement = (template) => {
   const containerElement = document.createElement(`div`);
   containerElement.innerHTML = template;
@@ -29,6 +29,9 @@ const getUserRank = (amount) => {
   } else if (amount >= UserRank.MILESTONES.THIRD && amount <= UserRank.MILESTONES.FOURTH) {
     rank = UserRank.TITLES.SECOND;
     return rank;
+  } else if (amount === UserRank.MILESTONES.ZERO) {
+    rank = ``;
+    return rank;
   }
 
   rank = UserRank.TITLES.THIRD;
@@ -54,7 +57,7 @@ const toJSON = (response) => {
 const isOnline = () => {
   return window.navigator.onLine;
 };
-const objectToArray = (object) => {
+const getArrayFromObject = (object) => {
   return Object.keys(object).map((id) => object[id]);
 };
 
@@ -62,4 +65,23 @@ const trimFilmDescription = (description) => {
   return description.length < Description.LENGTH.MAX ? description : `${description.slice(0, Description.LENGTH.TO_DISPLAY).trim()}…`;
 };
 
-export {createElement, render, removeElement, getUserRank, countDuplicateElements, checkStatus, toJSON, isOnline, objectToArray, trimFilmDescription};
+const getCommentPublicationDate = (time) => {
+  const inMinutes = moment().diff(time, `minutes`);
+  switch (true) {
+    case inMinutes < 1:
+      return `now`;
+    case inMinutes <= 3:
+      return `a minute ago`;
+    case inMinutes <= 59:
+      return `a few minutes ago`;
+    case inMinutes <= 119:
+      return `an hour ago`;
+    case inMinutes <= 1439:
+      return `a few hours ago`;
+    case inMinutes >= 1440:
+      return moment(time).fromNow();
+  }
+  return null;
+};
+
+export {createElement, render, removeElement, getUserRank, countDuplicateElements, checkStatus, toJSON, isOnline, getArrayFromObject, trimFilmDescription, getCommentPublicationDate};

@@ -40,14 +40,6 @@ const searchController = new SearchController(mainElement, search, onDataChange)
 const statisticsController = new StatisticsController(mainElement, onDataChange);
 const menuController = new MenuController(mainElement, search, searchController, pageController, statisticsController, onDataChange);
 
-pageController.init();
-searchController.init();
-statisticsController.init();
-menuController.init();
-
-render(headerElement, search.getElement());
-render(mainElement, loader.getElement());
-
 const renderPage = ((cards) => {
   removeElement(loader.getElement());
   loader.removeElement();
@@ -68,6 +60,14 @@ const renderPage = ((cards) => {
     menuController.hide();
   }
 });
+
+pageController.init();
+searchController.init();
+statisticsController.init();
+menuController.init();
+
+render(headerElement, search.getElement());
+render(mainElement, loader.getElement());
 
 window.addEventListener(`offline`, () => {
   document.title = `${document.title} [OFFLINE]`;

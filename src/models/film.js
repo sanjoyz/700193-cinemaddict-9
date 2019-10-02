@@ -11,6 +11,7 @@ export default class ModelFilm {
     this.genre = data[`film_info`][`genre`][0] || `No genre`;
     this.poster = data[`film_info`][`poster`];
     this.description = trimFilmDescription(data[`film_info`][`description`]);
+    this.descriptionFull = (data[`film_info`][`description`]);
     this.commentsAmount = data[`comments`].length;
     this.inWatchlist = data[`user_details`][`watchlist`];
     this.isWatched = data[`user_details`][`already_watched`];
@@ -26,7 +27,6 @@ export default class ModelFilm {
     this.releaseDate = moment(data[`film_info`][`release`][`date`]).format(`DD MMMM YYYY`);
     this.country = data[`film_info`][`release`][`release_country`];
     this.genres = data[`film_info`][`genre`];
-    this.description = data[`film_info`][`description`];
   }
 
   static parseFilm(data) {
